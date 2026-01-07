@@ -9,7 +9,7 @@
 
   <style>
     :root { --magenta:#E20074; --line:#e6e6e6; --muted:#666; }
-    body { font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; margin:0; color:#111; background:#fff; }
+    body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; margin:0; background:#fff; color:#111; }
     header { padding:16px; border-bottom:1px solid var(--line); position:sticky; top:0; background:#fff; z-index:10; }
     h1 { margin:0; color:var(--magenta); font-size:22px; }
     .sub { color:var(--muted); font-size:12px; margin-top:4px; }
@@ -20,348 +20,165 @@
     .card { border:1px solid var(--line); border-radius:14px; padding:12px; margin:12px 0; }
     .card h2 { margin:0 0 10px; font-size:14px; color:var(--magenta); }
     label { display:flex; gap:10px; align-items:flex-start; padding:6px 0; }
-    input[type="checkbox"] { width:18px; height:18px; margin-top:2px; accent-color: var(--magenta); }
-    input[type="date"], input[type="number"], input[type="text"] { padding:10px 12px; border:1px solid var(--line); border-radius:10px; width:100%; }
+    input[type="checkbox"] { width:18px; height:18px; margin-top:2px; accent-color:var(--magenta); }
+    input[type="date"], input[type="number"] { padding:10px 12px; border:1px solid var(--line); border-radius:10px; width:100%; }
     textarea { width:100%; min-height:70px; padding:10px 12px; border:1px solid var(--line); border-radius:10px; }
     .row { display:flex; gap:12px; flex-wrap:wrap; }
     .row > div { flex:1; min-width:220px; }
-    .tiny { color:var(--muted); font-size:12px; margin-top:8px; }
+    .tiny { color:var(--muted); font-size:12px; margin-top:6px; }
     .pill { display:inline-block; background:#f5f5f7; border:1px solid var(--line); padding:2px 8px; border-radius:999px; font-size:12px; }
-    .metrics-grid { display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap:10px; }
-    .metrics-grid label { display:block; padding:0; }
+    .metrics-grid { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:10px; }
     .metrics-grid span { display:block; font-size:12px; color:var(--muted); margin-bottom:6px; }
     .list { border-top:1px dashed var(--line); margin-top:12px; padding-top:12px; }
     .list-item { border:1px solid var(--line); border-radius:12px; padding:10px; margin:10px 0; }
-    .list-item .hdr { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+    .hdr { display:flex; justify-content:space-between; align-items:center; gap:10px; }
     .danger { border:1px solid #f1c0c0; background:#fff5f5; }
     .btn-primary { background:var(--magenta); border-color:var(--magenta); color:#fff; }
     .btn-row { display:flex; gap:10px; flex-wrap:wrap; }
-    a { color:var(--magenta); }
   </style>
 </head>
 
 <body>
-  <header>
-    <h1>LockIn</h1>
-    <div class="sub">Weekly checkboxes + metrics check-ins. Saves on-device.</div>
-  </header>
+<header>
+  <h1>LockIn</h1>
+  <div class="sub">Weekly checklists + metrics. Saved on this device.</div>
+</header>
 
-  <nav>
-    <button id="tab-week" class="active" onclick="showTab('week')">Week</button>
-    <button id="tab-metrics" onclick="showTab('metrics')">Metrics</button>
-    <button id="tab-reference" onclick="showTab('reference')">Reference</button>
-  </nav>
+<nav>
+  <button id="tab-week" class="active" onclick="showTab('week')">Week</button>
+  <button id="tab-metrics" onclick="showTab('metrics')">Metrics</button>
+  <button id="tab-reference" onclick="showTab('reference')">Reference</button>
+</nav>
 
-  <main>
-    <!-- WEEK TAB -->
-    <section id="week">
-      <div class="card">
-        <h2>Week selector</h2>
-        <div class="row">
-          <div>
-            <div class="tiny">Pick any date in the week (it will lock to Monday automatically).</div>
-            <input type="date" id="weekDate" />
-          </div>
-          <div>
-            <div class="tiny">This week key (stored as):</div>
-            <div class="pill" id="weekKeyPill">—</div>
-            <div class="tiny">Monday PT for this week: <span class="pill" id="ptPill">—</span></div>
-          </div>
-        </div>
+<main>
+<!-- WEEK -->
+<section id="week">
+  <div class="card">
+    <h2>Week selector</h2>
+    <div class="row">
+      <div>
+        <div class="tiny">Pick any date in the week.</div>
+        <input type="date" id="weekDate">
       </div>
-
-      <div class="card">
-        <h2>Week checklist</h2>
-
-        <label><input type="checkbox" data-field="monPractice"> Monday Practice</label>
-        <label><input type="checkbox" data-field="monPT"> Monday PT – <span id="ptLabel">—</span></label>
-
-        <label><input type="checkbox" data-field="tueHomework"> Tuesday Homework</label>
-        <label><input type="checkbox" data-field="wedCarlos"> Wednesday Carlos</label>
-        <label><input type="checkbox" data-field="thuPractice"> Thursday Practice</label>
-
-        <div class="tiny">Saturday Game Notes</div>
-        <textarea data-field="satNotes" placeholder="One sentence is enough."></textarea>
-
-        <div class="tiny" style="margin-top:10px;">Weekly</div>
-        <label><input type="checkbox" data-field="weeklyCarlosDone"> Carlos training completed (any day)</label>
-        <textarea data-field="weeklyNotes" placeholder="Weekly notes (fresh / ok / tired + 1 thought)"></textarea>
+      <div>
+        <div class="tiny">Stored as week of:</div>
+        <div class="pill" id="weekKeyPill">—</div>
+        <div class="tiny">Monday PT: <span class="pill" id="ptPill">—</span></div>
       </div>
+    </div>
+  </div>
 
-      <div class="tiny">Auto-saves. No “Save” button because we’re not making this harder than it needs to be.</div>
-    </section>
+  <div class="card">
+    <h2>Week checklist</h2>
+    <label><input type="checkbox" data-field="monPractice"> Monday Practice</label>
+    <label><input type="checkbox" data-field="monPT"> Monday PT – <span id="ptLabel">—</span></label>
+    <label><input type="checkbox" data-field="tueHomework"> Tuesday Homework</label>
+    <label><input type="checkbox" data-field="wedCarlos"> Wednesday Carlos</label>
+    <label><input type="checkbox" data-field="thuPractice"> Thursday Practice</label>
 
-    <!-- METRICS TAB -->
-    <section id="metrics" style="display:none;">
-      <div class="card">
-        <h2>Metric check-in</h2>
-        <div class="row">
-          <div>
-            <div class="tiny">Date</div>
-            <input type="date" id="metricDate" />
-          </div>
-          <div class="tiny">Tip: use the date you actually measured, not “whenever Dad remembered.”</div>
-        </div>
+    <div class="tiny">Saturday Game Notes</div>
+    <textarea data-field="satNotes"></textarea>
 
-        <div class="metrics-grid" style="margin-top:10px;">
-          <label><span>10y Sprint (sec)</span><input type="number" step="0.01" id="m10" /></label>
-          <label><span>20y Sprint (sec)</span><input type="number" step="0.01" id="m20" /></label>
-          <label><span>Repeat Sprint (sec / total)</span><input type="number" step="0.01" id="mRepeat" /></label>
-          <label><span>Vertical Jump (in)</span><input type="number" step="0.1" id="mVert" /></label>
-        </div>
+    <label><input type="checkbox" data-field="weeklyCarlos"> Carlos training completed</label>
+    <textarea data-field="weeklyNotes" placeholder="Fresh / OK / Tired + 1 note"></textarea>
+  </div>
+</section>
 
-        <div class="btn-row" style="margin-top:12px;">
-          <button class="btn-primary" id="addMetric">Add check-in</button>
-          <button id="clearMetric" class="danger">Clear form</button>
-        </div>
+<!-- METRICS -->
+<section id="metrics" style="display:none">
+  <div class="card">
+    <h2>Metric check-in</h2>
+    <input type="date" id="metricDate">
 
-        <div class="list" id="metricList">
-          <div class="tiny">No entries yet. First check-in = instant motivation.</div>
-        </div>
-      </div>
-    </section>
+    <div class="metrics-grid">
+      <label><span>10y Sprint (sec)</span><input type="number" step="0.01" id="m10"></label>
+      <label><span>20y Sprint (sec)</span><input type="number" step="0.01" id="m20"></label>
+      <label><span>Repeat Sprint (20-40-60 total sec)</span><input type="number" step="0.01" id="mRepeat"></label>
+      <label><span>5-10-5 Shuttle (sec)</span><input type="number" step="0.01" id="mAgility"></label>
+    </div>
 
-    <!-- REFERENCE TAB -->
-    <section id="reference" style="display:none;">
-      <div class="card">
-        <h2>Monday PT Reference</h2>
+    <div class="btn-row">
+      <button class="btn-primary" id="addMetric">Add check-in</button>
+      <button id="clearMetric" class="danger">Clear</button>
+    </div>
 
-        <div class="card" style="margin:0 0 10px;">
-          <h2>A — Acceleration & Power</h2>
-          <ul>
-            <li>6–8 × 10–20y sprints (full rest)</li>
-            <li>Plyo circuit (2 rounds): squat → jump (6–8), pogo jumps (20s), skater jumps (6/side)</li>
-            <li>Optional: 4 × 20y fast, clean form</li>
-          </ul>
-        </div>
+    <div class="card" id="progressCard">
+      <h2>Progress (baseline → latest)</h2>
+      <div id="progressBody" class="tiny">Add 2+ check-ins.</div>
+    </div>
 
-        <div class="card" style="margin:0 0 10px;">
-          <h2>B — RSA (Soccer Gas)</h2>
-          <ul>
-            <li>4 × 10y accelerations</li>
-            <li>2–3 sets of 20–40–60 (jog backs)</li>
-            <li>90s rest between sets</li>
-            <li>Short core (5 min): plank / side plank / dead bugs (pick 2–3)</li>
-          </ul>
-        </div>
+    <div class="list" id="metricList"></div>
+  </div>
+</section>
 
-        <div class="card" style="margin:0;">
-          <h2>C — COD + Speed Endurance</h2>
-          <ul>
-            <li>6–8 reps of 5–10–5 or L-drill (sharp cuts, full rest)</li>
-            <li>6 × 30s hard / 60s easy (game-speed, not all-out sprinting)</li>
-            <li>Light plyo: pogo jumps (2 × 20s)</li>
-          </ul>
-        </div>
-
-        <div class="tiny">PT letter auto-rotates weekly A → B → C.</div>
-      </div>
-    </section>
-  </main>
+<!-- REFERENCE -->
+<section id="reference" style="display:none">
+  <div class="card">
+    <h2>Monday PT Reference</h2>
+    <ul>
+      <li><b>A:</b> Acceleration & Power</li>
+      <li><b>B:</b> Repeat Sprint Ability</li>
+      <li><b>C:</b> Change of Direction + Speed Endurance</li>
+    </ul>
+  </div>
+</section>
+</main>
 
 <script>
-  // ---------- TAB UI ----------
-  function showTab(which) {
-    const tabs = ["week","metrics","reference"];
-    tabs.forEach(t => document.getElementById(t).style.display = (t === which ? "block" : "none"));
-    tabs.forEach(t => document.getElementById("tab-" + t).classList.toggle("active", t === which));
-  }
+/* --- tab UI --- */
+function showTab(t){['week','metrics','reference'].forEach(x=>document.getElementById(x).style.display=x===t?'block':'none');}
 
-  // ---------- WEEK KEYING ----------
-  // Convert any chosen date to "week key" = Monday of that week (YYYY-MM-DD)
-  function getWeekKey(dateStr) {
-    if (!dateStr) return null;
-    const d = new Date(dateStr + "T00:00:00");
-    const day = d.getDay(); // 0=Sun, 1=Mon
-    const diffToMonday = (day === 0) ? -6 : (1 - day);
-    d.setDate(d.getDate() + diffToMonday);
-    return d.toISOString().slice(0,10);
-  }
+/* --- week key --- */
+function getWeekKey(d){const x=new Date(d);const day=x.getDay();x.setDate(x.getDate()-(day===0?6:day-1));return x.toISOString().slice(0,10);}
+function getPT(k){const b=new Date("2026-01-05");const w=new Date(k);return["A","B","C"][Math.floor((w-b)/6048e5)%3];}
 
-  // PT letter rotates weekly from a base Monday.
-  // Base: 2026-01-05 (first real Monday on your Jan calendar)
-  function getPTLetter(weekKey) {
-    const base = new Date("2026-01-05T00:00:00");
-    const wk = new Date(weekKey + "T00:00:00");
-    const diffWeeks = Math.floor((wk - base) / (1000*60*60*24*7));
-    const letters = ["A","B","C"];
-    return letters[((diffWeeks % 3) + 3) % 3];
-  }
+/* --- week storage --- */
+const WK="lockin_week_";
+function loadWeek(k){document.querySelectorAll('[data-field]').forEach(e=>{if(e.type==="checkbox")e.checked=false;else e.value="";});
+const d=JSON.parse(localStorage.getItem(WK+k)||"{}");
+document.querySelectorAll('[data-field]').forEach(e=>{const f=e.dataset.field;if(f in d)e.type==="checkbox"?e.checked=d[f]:e.value=d[f];});}
+function saveWeek(k){const d={};document.querySelectorAll('[data-field]').forEach(e=>d[e.dataset.field]=e.type==="checkbox"?e.checked:e.value);
+localStorage.setItem(WK+k,JSON.stringify(d));}
 
-  // ---------- WEEK STORAGE ----------
-  const WEEK_PREFIX = "lockin_week_v1_";
+/* --- metrics --- */
+const MK="lockin_metrics";
+function getM(){return JSON.parse(localStorage.getItem(MK)||"[]");}
+function setM(x){localStorage.setItem(MK,JSON.stringify(x));}
+function renderMetrics(){
+const list=getM().sort((a,b)=>b.date.localeCompare(a.date));
+const L=document.getElementById("metricList");L.innerHTML="";
+list.forEach(m=>{
+L.innerHTML+=`<div class="list-item"><b>${m.date}</b><div class="tiny">
+10y:${m.s10} | 20y:${m.s20} | Repeat:${m.rep} | 5-10-5:${m.agi}</div></div>`;
+});
+renderProgress();
+}
+function renderProgress(){
+const l=getM().sort((a,b)=>a.date.localeCompare(b.date));
+if(l.length<2)return;
+const b=l[0],n=l[l.length-1];
+document.getElementById("progressBody").innerHTML=`
+10y: ${b.s10} → ${n.s10}<br>
+20y: ${b.s20} → ${n.s20}<br>
+Repeat: ${b.rep} → ${n.rep}<br>
+5-10-5: ${b.agi} → ${n.agi}`;
+}
 
-  function clearWeekUI() {
-    document.querySelectorAll('#week [data-field]').forEach(el => {
-      if (el.type === "checkbox") el.checked = false;
-      else el.value = "";
-    });
-  }
+/* --- wiring --- */
+weekDate.onchange=()=>{const k=getWeekKey(weekDate.value);weekKeyPill.textContent=k;ptLabel.textContent=ptPill.textContent=getPT(k);loadWeek(k);}
+document.querySelectorAll('[data-field]').forEach(e=>e.oninput=()=>saveWeek(getWeekKey(weekDate.value)));
 
-  function loadWeek(weekKey) {
-    clearWeekUI();
-    if (!weekKey) return;
+addMetric.onclick=()=>{const l=getM();l.push({
+date:metricDate.value,
+s10:m10.value,s20:m20.value,rep:mRepeat.value,agi:mAgility.value});
+setM(l);renderMetrics();}
 
-    const raw = localStorage.getItem(WEEK_PREFIX + weekKey);
-    if (!raw) return;
+clearMetric.onclick=()=>{metricDate.value=m10.value=m20.value=mRepeat.value=mAgility.value="";}
 
-    const data = JSON.parse(raw);
-    document.querySelectorAll('#week [data-field]').forEach(el => {
-      const k = el.getAttribute("data-field");
-      if (!(k in data)) return;
-      if (el.type === "checkbox") el.checked = !!data[k];
-      else el.value = data[k] ?? "";
-    });
-  }
-
-  function saveWeek(weekKey) {
-    if (!weekKey) return;
-    const data = {};
-    document.querySelectorAll('#week [data-field]').forEach(el => {
-      const k = el.getAttribute("data-field");
-      if (el.type === "checkbox") data[k] = el.checked;
-      else data[k] = el.value;
-    });
-    localStorage.setItem(WEEK_PREFIX + weekKey, JSON.stringify(data));
-  }
-
-  // ---------- METRICS STORAGE ----------
-  const METRIC_KEY = "lockin_metrics_v1";
-
-  function getMetrics() {
-    return JSON.parse(localStorage.getItem(METRIC_KEY) || "[]");
-  }
-
-  function setMetrics(list) {
-    localStorage.setItem(METRIC_KEY, JSON.stringify(list));
-  }
-
-  function renderMetrics() {
-    const list = getMetrics()
-      .sort((a,b) => (b.date || "").localeCompare(a.date || ""));
-
-    const container = document.getElementById("metricList");
-    container.innerHTML = "";
-
-    if (list.length === 0) {
-      container.innerHTML = '<div class="tiny">No entries yet. First check-in = instant motivation.</div>';
-      return;
-    }
-
-    list.forEach((m, idx) => {
-      const div = document.createElement("div");
-      div.className = "list-item";
-      div.innerHTML = `
-        <div class="hdr">
-          <div><b>${m.date || "No date"}</b></div>
-          <button data-del="${idx}" class="danger">Delete</button>
-        </div>
-        <div class="tiny">10y: ${m.s10 ?? ""} | 20y: ${m.s20 ?? ""} | Repeat: ${m.repeat ?? ""} | Vert: ${m.vert ?? ""}</div>
-      `;
-      container.appendChild(div);
-    });
-
-    container.querySelectorAll("button[data-del]").forEach(btn => {
-      btn.addEventListener("click", (e) => {
-        const sorted = list; // already sorted for display
-        const displayIdx = parseInt(e.target.getAttribute("data-del"), 10);
-        const item = sorted[displayIdx];
-
-        // Remove matching item from stored list (by unique signature)
-        const stored = getMetrics();
-        const filtered = stored.filter(x =>
-          !(x.date === item.date && x.s10 === item.s10 && x.s20 === item.s20 && x.repeat === item.repeat && x.vert === item.vert)
-        );
-        setMetrics(filtered);
-        renderMetrics();
-      });
-    });
-  }
-
-  function clearMetricForm() {
-    document.getElementById("metricDate").value = "";
-    document.getElementById("m10").value = "";
-    document.getElementById("m20").value = "";
-    document.getElementById("mRepeat").value = "";
-    document.getElementById("mVert").value = "";
-  }
-
-  // ---------- WIRING ----------
-  const weekDateInput = document.getElementById("weekDate");
-  const weekKeyPill = document.getElementById("weekKeyPill");
-  const ptPill = document.getElementById("ptPill");
-  const ptLabel = document.getElementById("ptLabel");
-
-  function refreshWeekContext() {
-    const weekKey = getWeekKey(weekDateInput.value);
-    weekKeyPill.textContent = weekKey || "—";
-
-    if (weekKey) {
-      const letter = getPTLetter(weekKey);
-      ptPill.textContent = letter;
-      ptLabel.textContent = letter;
-
-      loadWeek(weekKey);
-    } else {
-      ptPill.textContent = "—";
-      ptLabel.textContent = "—";
-      clearWeekUI();
-    }
-  }
-
-  // When date changes: switch week context (load different stored week)
-  weekDateInput.addEventListener("change", refreshWeekContext);
-
-  // Auto-save whenever user changes a checkbox or note (per weekKey)
-  document.querySelectorAll('#week [data-field]').forEach(el => {
-    el.addEventListener("input", () => {
-      const weekKey = getWeekKey(weekDateInput.value);
-      saveWeek(weekKey);
-    });
-    el.addEventListener("change", () => {
-      const weekKey = getWeekKey(weekDateInput.value);
-      saveWeek(weekKey);
-    });
-  });
-
-  // Metrics buttons
-  document.getElementById("addMetric").addEventListener("click", () => {
-    const date = document.getElementById("metricDate").value;
-    if (!date) { alert("Pick a date for the check-in."); return; }
-
-    const entry = {
-      date,
-      s10: document.getElementById("m10").value,
-      s20: document.getElementById("m20").value,
-      repeat: document.getElementById("mRepeat").value,
-      vert: document.getElementById("mVert").value
-    };
-
-    const list = getMetrics();
-    list.push(entry);
-    setMetrics(list);
-    renderMetrics();
-    clearMetricForm();
-  });
-
-  document.getElementById("clearMetric").addEventListener("click", clearMetricForm);
-
-  // Initial setup: default to today and load correct week
-  (function init() {
-    const today = new Date();
-    const yyyy = today.getFullYear();
-    const mm = String(today.getMonth() + 1).padStart(2,"0");
-    const dd = String(today.getDate()).padStart(2,"0");
-    weekDateInput.value = `${yyyy}-${mm}-${dd}`;
-
-    refreshWeekContext();
-    renderMetrics();
-
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("service-worker.js");
-    }
-  })();
+(function init(){
+const t=new Date();weekDate.value=t.toISOString().slice(0,10);weekDate.onchange();
+renderMetrics();
+})();
 </script>
-
 </body>
 </html>
