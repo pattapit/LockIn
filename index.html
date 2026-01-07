@@ -1,44 +1,99 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="theme-color" content="#E20074" />
-  <link rel="manifest" href="manifest.json" />
-  <title>LockIn</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>LockIn</title>
 
-  <style>
-    :root { --magenta:#E20074; --line:#e6e6e6; --muted:#666; }
-    body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; margin:0; background:#fff; color:#111; }
-    header { padding:16px; border-bottom:1px solid var(--line); position:sticky; top:0; background:#fff; z-index:10; }
-    h1 { margin:0; color:var(--magenta); font-size:22px; }
-    .sub { color:var(--muted); font-size:12px; margin-top:4px; }
-    nav { padding:12px 16px; display:flex; gap:8px; border-bottom:1px solid var(--line); background:#fff; position:sticky; top:66px; z-index:9; }
-    button { border:1px solid var(--line); background:#fff; border-radius:10px; padding:8px 10px; font-weight:700; }
-    button.active { border-color:var(--magenta); color:var(--magenta); }
-    main { padding:16px; max-width:840px; margin:0 auto; }
-    .card { border:1px solid var(--line); border-radius:14px; padding:12px; margin:12px 0; }
-    .card h2 { margin:0 0 10px; font-size:14px; color:var(--magenta); }
-    label { display:flex; gap:10px; align-items:flex-start; padding:6px 0; }
-    input[type="checkbox"] { width:18px; height:18px; margin-top:2px; accent-color:var(--magenta); }
-    input[type="date"], input[type="number"] { padding:10px 12px; border:1px solid var(--line); border-radius:10px; width:100%; }
-    textarea { width:100%; min-height:70px; padding:10px 12px; border:1px solid var(--line); border-radius:10px; }
-    .row { display:flex; gap:12px; flex-wrap:wrap; }
-    .row > div { flex:1; min-width:220px; }
-    .tiny { color:var(--muted); font-size:12px; margin-top:6px; }
-    .pill { display:inline-block; background:#f5f5f7; border:1px solid var(--line); padding:2px 8px; border-radius:999px; font-size:12px; }
-    .metrics-grid { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:10px; }
-    .metrics-grid span { display:block; font-size:12px; color:var(--muted); margin-bottom:6px; }
-    .list { border-top:1px dashed var(--line); margin-top:12px; padding-top:12px; }
-    .list-item { border:1px solid var(--line); border-radius:12px; padding:10px; margin:10px 0; }
-    .hdr { display:flex; justify-content:space-between; align-items:center; gap:10px; }
-    .danger { border:1px solid #f1c0c0; background:#fff5f5; }
-    .btn-primary { background:var(--magenta); border-color:var(--magenta); color:#fff; }
-    .btn-row { display:flex; gap:10px; flex-wrap:wrap; }
-  </style>
+<style>
+:root{
+  --purple:#4B2E83;
+  --gold:#B7A57A;
+  --gold-light:#E8E3D3;
+  --line:#e6e6e6;
+  --muted:#666;
+}
+
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  margin:0;background:#fff;color:#111;
+}
+
+header{
+  padding:16px;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:#fff;z-index:10;
+}
+h1{margin:0;color:var(--purple);}
+.sub{font-size:12px;color:var(--muted);}
+
+nav{
+  display:flex;gap:10px;padding:12px 16px;
+  border-bottom:1px solid var(--line);
+  position:sticky;top:66px;background:#fff;z-index:9;
+}
+nav button{
+  border:1px solid var(--purple);
+  background:#fff;color:var(--purple);
+  border-radius:999px;
+  padding:8px 14px;
+  font-weight:700;
+}
+nav button.active{
+  background:var(--purple);
+  color:#fff;
+}
+
+main{padding:16px;max-width:840px;margin:auto;}
+
+.card{
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:14px;
+  margin:14px 0;
+}
+.card h2{margin:0 0 10px;color:var(--purple);font-size:15px;}
+
+label{display:flex;gap:10px;padding:6px 0;}
+input[type="checkbox"]{accent-color:var(--purple);}
+input[type="date"],input[type="number"]{
+  width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;
+}
+textarea{
+  width:100%;min-height:70px;padding:10px;border:1px solid var(--line);border-radius:10px;
+}
+
+.row{display:flex;gap:12px;flex-wrap:wrap;}
+.row>div{flex:1;min-width:220px;}
+.tiny{font-size:12px;color:var(--muted);}
+.pill{
+  display:inline-block;
+  background:var(--gold-light);
+  border:1px solid var(--gold);
+  padding:2px 10px;
+  border-radius:999px;
+  font-size:12px;
+}
+
+.metrics-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+
+.list-item{
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:10px;
+  margin-top:10px;
+}
+
+.good{color:green;font-weight:700;}
+.bad{color:#b00020;font-weight:700;}
+</style>
 </head>
 
 <body>
+
 <header>
   <h1>LockIn</h1>
   <div class="sub">Weekly checklists + metrics. Saved on this device.</div>
@@ -51,27 +106,28 @@
 </nav>
 
 <main>
+
 <!-- WEEK -->
 <section id="week">
   <div class="card">
-    <h2>Week selector</h2>
+    <h2>Week Selector</h2>
     <div class="row">
       <div>
-        <div class="tiny">Pick any date in the week.</div>
+        <div class="tiny">Pick any date in the week</div>
         <input type="date" id="weekDate">
       </div>
       <div>
-        <div class="tiny">Stored as week of:</div>
+        <div class="tiny">Stored as week of</div>
         <div class="pill" id="weekKeyPill">—</div>
-        <div class="tiny">Monday PT: <span class="pill" id="ptPill">—</span></div>
+        <div class="tiny">Monday PT <span class="pill" id="ptPill">—</span></div>
       </div>
     </div>
   </div>
 
   <div class="card">
-    <h2>Week checklist</h2>
+    <h2>Checklist</h2>
     <label><input type="checkbox" data-field="monPractice"> Monday Practice</label>
-    <label><input type="checkbox" data-field="monPT"> Monday PT – <span id="ptLabel">—</span></label>
+    <label><input type="checkbox" data-field="monPT"> Monday PT – <span id="ptLabel"></span></label>
     <label><input type="checkbox" data-field="tueHomework"> Tuesday Homework</label>
     <label><input type="checkbox" data-field="wedCarlos"> Wednesday Carlos</label>
     <label><input type="checkbox" data-field="thuPractice"> Thursday Practice</label>
@@ -80,104 +136,139 @@
     <textarea data-field="satNotes"></textarea>
 
     <label><input type="checkbox" data-field="weeklyCarlos"> Carlos training completed</label>
-    <textarea data-field="weeklyNotes" placeholder="Fresh / OK / Tired + 1 note"></textarea>
+    <textarea data-field="weeklyNotes" placeholder="Fresh / OK / Tired + one thought"></textarea>
   </div>
 </section>
 
 <!-- METRICS -->
 <section id="metrics" style="display:none">
   <div class="card">
-    <h2>Metric check-in</h2>
+    <h2>Metric Check-In</h2>
     <input type="date" id="metricDate">
 
     <div class="metrics-grid">
-      <label><span>10y Sprint (sec)</span><input type="number" step="0.01" id="m10"></label>
-      <label><span>20y Sprint (sec)</span><input type="number" step="0.01" id="m20"></label>
-      <label><span>Repeat Sprint (20-40-60 total sec)</span><input type="number" step="0.01" id="mRepeat"></label>
-      <label><span>5-10-5 Shuttle (sec)</span><input type="number" step="0.01" id="mAgility"></label>
+      <label>10y Sprint (sec)<input type="number" step="0.01" id="m10"></label>
+      <label>20y Sprint (sec)<input type="number" step="0.01" id="m20"></label>
+      <label>Repeat Sprint (20-40-60 total)<input type="number" step="0.01" id="mRepeat"></label>
+      <label>5-10-5 Shuttle (sec)<input type="number" step="0.01" id="mAgility"></label>
     </div>
 
-    <div class="btn-row">
-      <button class="btn-primary" id="addMetric">Add check-in</button>
-      <button id="clearMetric" class="danger">Clear</button>
+    <button onclick="addMetric()">Add check-in</button>
+
+    <div class="card">
+      <h2>Progress (Baseline → Latest)</h2>
+      <div id="progress"></div>
     </div>
 
-    <div class="card" id="progressCard">
-      <h2>Progress (baseline → latest)</h2>
-      <div id="progressBody" class="tiny">Add 2+ check-ins.</div>
-    </div>
-
-    <div class="list" id="metricList"></div>
+    <div id="metricList"></div>
   </div>
 </section>
 
 <!-- REFERENCE -->
 <section id="reference" style="display:none">
   <div class="card">
-    <h2>Monday PT Reference</h2>
+    <h2>Monday A – Acceleration & Power</h2>
     <ul>
-      <li><b>A:</b> Acceleration & Power</li>
-      <li><b>B:</b> Repeat Sprint Ability</li>
-      <li><b>C:</b> Change of Direction + Speed Endurance</li>
+      <li>6–8 × 10–20y sprints (full rest)</li>
+      <li>Plyo circuit (2 rounds): squat jumps, pogo jumps, skater jumps</li>
+      <li>Optional: 4 × 20y fast, clean</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Monday B – RSA (Soccer Gas)</h2>
+    <ul>
+      <li>4 × 10y accelerations</li>
+      <li>2–3 sets of 20–40–60 (jog backs)</li>
+      <li>90s rest between sets</li>
+      <li>Short core (5 min)</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Monday C – COD + Speed Endurance</h2>
+    <ul>
+      <li>5-10-5 or L-drill (6–8 reps)</li>
+      <li>6 × 30s hard / 60s easy</li>
+      <li>Light plyo: pogo jumps</li>
     </ul>
   </div>
 </section>
+
 </main>
 
 <script>
-/* --- tab UI --- */
-function showTab(t){['week','metrics','reference'].forEach(x=>document.getElementById(x).style.display=x===t?'block':'none');}
+function showTab(t){
+  ['week','metrics','reference'].forEach(x=>{
+    document.getElementById(x).style.display=x===t?'block':'none';
+    document.getElementById('tab-'+x).classList.toggle('active',x===t);
+  });
+}
 
-/* --- week key --- */
-function getWeekKey(d){const x=new Date(d);const day=x.getDay();x.setDate(x.getDate()-(day===0?6:day-1));return x.toISOString().slice(0,10);}
-function getPT(k){const b=new Date("2026-01-05");const w=new Date(k);return["A","B","C"][Math.floor((w-b)/6048e5)%3];}
+function getWeekKey(d){
+  const x=new Date(d);const day=x.getDay();
+  x.setDate(x.getDate()-(day===0?6:day-1));
+  return x.toISOString().slice(0,10);
+}
+function getPT(k){
+  const base=new Date("2026-01-05");
+  return ["A","B","C"][Math.floor((new Date(k)-base)/6048e5)%3];
+}
 
-/* --- week storage --- */
 const WK="lockin_week_";
-function loadWeek(k){document.querySelectorAll('[data-field]').forEach(e=>{if(e.type==="checkbox")e.checked=false;else e.value="";});
-const d=JSON.parse(localStorage.getItem(WK+k)||"{}");
-document.querySelectorAll('[data-field]').forEach(e=>{const f=e.dataset.field;if(f in d)e.type==="checkbox"?e.checked=d[f]:e.value=d[f];});}
-function saveWeek(k){const d={};document.querySelectorAll('[data-field]').forEach(e=>d[e.dataset.field]=e.type==="checkbox"?e.checked:e.value);
-localStorage.setItem(WK+k,JSON.stringify(d));}
-
-/* --- metrics --- */
-const MK="lockin_metrics";
-function getM(){return JSON.parse(localStorage.getItem(MK)||"[]");}
-function setM(x){localStorage.setItem(MK,JSON.stringify(x));}
-function renderMetrics(){
-const list=getM().sort((a,b)=>b.date.localeCompare(a.date));
-const L=document.getElementById("metricList");L.innerHTML="";
-list.forEach(m=>{
-L.innerHTML+=`<div class="list-item"><b>${m.date}</b><div class="tiny">
-10y:${m.s10} | 20y:${m.s20} | Repeat:${m.rep} | 5-10-5:${m.agi}</div></div>`;
-});
-renderProgress();
+function loadWeek(k){
+  document.querySelectorAll('[data-field]').forEach(e=>e.type==="checkbox"?e.checked=false:e.value="");
+  const d=JSON.parse(localStorage.getItem(WK+k)||"{}");
+  document.querySelectorAll('[data-field]').forEach(e=>{
+    if(e.dataset.field in d)e.type==="checkbox"?e.checked=d[e.dataset.field]:e.value=d[e.dataset.field];
+  });
 }
-function renderProgress(){
-const l=getM().sort((a,b)=>a.date.localeCompare(b.date));
-if(l.length<2)return;
-const b=l[0],n=l[l.length-1];
-document.getElementById("progressBody").innerHTML=`
-10y: ${b.s10} → ${n.s10}<br>
-20y: ${b.s20} → ${n.s20}<br>
-Repeat: ${b.rep} → ${n.rep}<br>
-5-10-5: ${b.agi} → ${n.agi}`;
+function saveWeek(k){
+  const d={};
+  document.querySelectorAll('[data-field]').forEach(e=>d[e.dataset.field]=e.type==="checkbox"?e.checked:e.value);
+  localStorage.setItem(WK+k,JSON.stringify(d));
 }
 
-/* --- wiring --- */
-weekDate.onchange=()=>{const k=getWeekKey(weekDate.value);weekKeyPill.textContent=k;ptLabel.textContent=ptPill.textContent=getPT(k);loadWeek(k);}
+weekDate.onchange=()=>{
+  const k=getWeekKey(weekDate.value);
+  weekKeyPill.textContent=k;
+  ptPill.textContent=ptLabel.textContent=getPT(k);
+  loadWeek(k);
+};
 document.querySelectorAll('[data-field]').forEach(e=>e.oninput=()=>saveWeek(getWeekKey(weekDate.value)));
 
-addMetric.onclick=()=>{const l=getM();l.push({
-date:metricDate.value,
-s10:m10.value,s20:m20.value,rep:mRepeat.value,agi:mAgility.value});
-setM(l);renderMetrics();}
-
-clearMetric.onclick=()=>{metricDate.value=m10.value=m20.value=mRepeat.value=mAgility.value="";}
+const MK="lockin_metrics";
+function addMetric(){
+  const list=JSON.parse(localStorage.getItem(MK)||"[]");
+  list.push({
+    date:metricDate.value,
+    s10:+m10.value,s20:+m20.value,rep:+mRepeat.value,agi:+mAgility.value
+  });
+  localStorage.setItem(MK,JSON.stringify(list));
+  renderMetrics();
+}
+function renderMetrics(){
+  const list=JSON.parse(localStorage.getItem(MK)||"[]").sort((a,b)=>a.date.localeCompare(b.date));
+  metricList.innerHTML="";
+  if(list.length>=2){
+    const b=list[0],n=list[list.length-1];
+    const d=(a,b,inv=false)=>{const v=b-a;return `<span class="${(inv?v<0:v>0)?'good':'bad'}">${v.toFixed(2)}</span>`;}
+    progress.innerHTML=
+      `10y Δ ${d(b.s10,n.s10,true)} sec<br>
+       20y Δ ${d(b.s20,n.s20,true)} sec<br>
+       Repeat Δ ${d(b.rep,n.rep,true)} sec<br>
+       5-10-5 Δ ${d(b.agi,n.agi,true)} sec`;
+  }
+  list.reverse().forEach(m=>{
+    metricList.innerHTML+=`<div class="list-item"><b>${m.date}</b>
+    <div class="tiny">10y:${m.s10} | 20y:${m.s20} | Repeat:${m.rep} | 5-10-5:${m.agi}</div></div>`;
+  });
+}
 
 (function init(){
-const t=new Date();weekDate.value=t.toISOString().slice(0,10);weekDate.onchange();
-renderMetrics();
+  const t=new Date().toISOString().slice(0,10);
+  weekDate.value=t;weekDate.onchange();
+  renderMetrics();
 })();
 </script>
 </body>
