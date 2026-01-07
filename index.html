@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#E20074" />
+  <link rel="manifest" href="manifest.json">
+  <title>GA Training Tracker</title>
+
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      margin: 0;
+      padding: 16px;
+      background: #fff;
+      color: #111;
+    }
+    h1, h2 { color: #E20074; }
+    section {
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      margin: 6px 0;
+    }
+    textarea, input[type="number"], input[type="date"] {
+      width: 100%;
+      margin-top: 6px;
+    }
+    nav button {
+      margin-right: 8px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>GA Training Tracker</h1>
+
+<nav>
+  <button onclick="show('week')">Week</button>
+  <button onclick="show('metrics')">Metrics</button>
+  <button onclick="show('reference')">Reference</button>
+</nav>
+
+<section id="week">
+  <h2>Week of <input type="date" id="weekStart"></h2>
+
+  <label><input type="checkbox"> Monday Practice</label>
+  <label><input type="checkbox" id="ptBox"> Monday PT – <span id="ptLabel"></span></label>
+  <label><input type="checkbox"> Tuesday Homework</label>
+  <label><input type="checkbox"> Wednesday Carlos</label>
+  <label><input type="checkbox"> Thursday Practice</label>
+
+  <h3>Saturday Game Notes</h3>
+  <textarea></textarea>
+
+  <h3>Weekly</h3>
+  <label><input type="checkbox"> Carlos Training Completed</label>
+  <textarea placeholder="Weekly notes (fresh / ok / tired)"></textarea>
+</section>
+
+<section id="metrics" style="display:none">
+  <h2>Metric Check-In</h2>
+  <input type="date">
+  <label>10y Sprint <input type="number"></label>
+  <label>20y Sprint <input type="number"></label>
+  <label>Repeat Sprint <input type="number"></label>
+  <label>Vertical Jump <input type="number"></label>
+</section>
+
+<section id="reference" style="display:none">
+  <h2>Monday A – Acceleration & Power</h2>
+  <ul>
+    <li>6–8 × 10–20y sprints</li>
+    <li>Plyo: squat jumps, pogo jumps, skater jumps</li>
+    <li>Optional: 4 × 20y fast</li>
+  </ul>
+
+  <h2>Monday B – RSA (Soccer Gas)</h2>
+  <ul>
+    <li>4 × 10y accelerations</li>
+    <li>2–3 sets of 20–40–60</li>
+    <li>Short core (5 min)</li>
+  </ul>
+
+  <h2>Monday C – COD + Speed Endurance</h2>
+  <ul>
+    <li>5–10–5 or L-drill</li>
+    <li>6 × 30s hard / 60s easy</li>
+    <li>Pogo jumps</li>
+  </ul>
+</section>
+
+<script>
+  function show(id) {
+    ['week','metrics','reference'].forEach(s =>
+      document.getElementById(s).style.display = s === id ? 'block' : 'none'
+    );
+  }
+
+  function updatePT() {
+    const start = new Date(document.getElementById('weekStart').value);
+    const base = new Date('2026-01-05'); // first Monday
+    const diffWeeks = Math.floor((start - base) / (1000*60*60*24*7));
+    const letters = ['A','B','C'];
+    document.getElementById('ptLabel').textContent =
+      letters[(diffWeeks % 3 + 3) % 3];
+  }
+
+  document.getElementById('weekStart').addEventListener('change', updatePT);
+</script>
+
+</body>
+</html>
