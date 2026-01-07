@@ -146,4 +146,222 @@
         </div>
 
         <div class="card" style="margin:0;">
-          <h2
+          <h2>C — COD + Speed Endurance</h2>
+          <ul>
+            <li>6–8 reps of 5–10–5 or L-drill (sharp cuts, full rest)</li>
+            <li>6 × 30s hard / 60s easy (game-speed, not all-out sprinting)</li>
+            <li>Light plyo: pogo jumps (2 × 20s)</li>
+          </ul>
+        </div>
+
+        <div class="tiny">PT letter auto-rotates weekly A → B → C.</div>
+      </div>
+    </section>
+  </main>
+
+<script>
+  // ---------- TAB UI ----------
+  function showTab(which) {
+    const tabs = ["week","metrics","reference"];
+    tabs.forEach(t => document.getElementById(t).style.display = (t === which ? "block" : "none"));
+    tabs.forEach(t => document.getElementById("tab-" + t).classList.toggle("active", t === which));
+  }
+
+  // ---------- WEEK KEYING ----------
+  // Convert any chosen date to "week key" = Monday of that week (YYYY-MM-DD)
+  function getWeekKey(dateStr) {
+    if (!dateStr) return null;
+    const d = new Date(dateStr + "T00:00:00");
+    const day = d.getDay(); // 0=Sun, 1=Mon
+    const diffToMonday = (day === 0) ? -6 : (1 - day);
+    d.setDate(d.getDate() + diffToMonday);
+    return d.toISOString().slice(0,10);
+  }
+
+  // PT letter rotates weekly from a base Monday.
+  // Base: 2026-01-05 (first real Monday on your Jan calendar)
+  function getPTLetter(weekKey) {
+    const base = new Date("2026-01-05T00:00:00");
+    const wk = new Date(weekKey + "T00:00:00");
+    const diffWeeks = Math.floor((wk - base) / (1000*60*60*24*7));
+    const letters = ["A","B","C"];
+    return letters[((diffWeeks % 3) + 3) % 3];
+  }
+
+  // ---------- WEEK STORAGE ----------
+  const WEEK_PREFIX = "lockin_week_v1_";
+
+  function clearWeekUI() {
+    document.querySelectorAll('#week [data-field]').forEach(el => {
+      if (el.type === "checkbox") el.checked = false;
+      else el.value = "";
+    });
+  }
+
+  function loadWeek(weekKey) {
+    clearWeekUI();
+    if (!weekKey) return;
+
+    const raw = localStorage.getItem(WEEK_PREFIX + weekKey);
+    if (!raw) return;
+
+    const data = JSON.parse(raw);
+    document.querySelectorAll('#week [data-field]').forEach(el => {
+      const k = el.getAttribute("data-field");
+      if (!(k in data)) return;
+      if (el.type === "checkbox") el.checked = !!data[k];
+      else el.value = data[k] ?? "";
+    });
+  }
+
+  function saveWeek(weekKey) {
+    if (!weekKey) return;
+    const data = {};
+    document.querySelectorAll('#week [data-field]').forEach(el => {
+      const k = el.getAttribute("data-field");
+      if (el.type === "checkbox") data[k] = el.checked;
+      else data[k] = el.value;
+    });
+    localStorage.setItem(WEEK_PREFIX + weekKey, JSON.stringify(data));
+  }
+
+  // ---------- METRICS STORAGE ----------
+  const METRIC_KEY = "lockin_metrics_v1";
+
+  function getMetrics() {
+    return JSON.parse(localStorage.getItem(METRIC_KEY) || "[]");
+  }
+
+  function setMetrics(list) {
+    localStorage.setItem(METRIC_KEY, JSON.stringify(list));
+  }
+
+  function renderMetrics() {
+    const list = getMetrics()
+      .sort((a,b) => (b.date || "").localeCompare(a.date || ""));
+
+    const container = document.getElementById("metricList");
+    container.innerHTML = "";
+
+    if (list.length === 0) {
+      container.innerHTML = '<div class="tiny">No entries yet. First check-in = instant motivation.</div>';
+      return;
+    }
+
+    list.forEach((m, idx) => {
+      const div = document.createElement("div");
+      div.className = "list-item";
+      div.innerHTML = `
+        <div class="hdr">
+          <div><b>${m.date || "No date"}</b></div>
+          <button data-del="${idx}" class="danger">Delete</button>
+        </div>
+        <div class="tiny">10y: ${m.s10 ?? ""} | 20y: ${m.s20 ?? ""} | Repeat: ${m.repeat ?? ""} | Vert: ${m.vert ?? ""}</div>
+      `;
+      container.appendChild(div);
+    });
+
+    container.querySelectorAll("button[data-del]").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        const sorted = list; // already sorted for display
+        const displayIdx = parseInt(e.target.getAttribute("data-del"), 10);
+        const item = sorted[displayIdx];
+
+        // Remove matching item from stored list (by unique signature)
+        const stored = getMetrics();
+        const filtered = stored.filter(x =>
+          !(x.date === item.date && x.s10 === item.s10 && x.s20 === item.s20 && x.repeat === item.repeat && x.vert === item.vert)
+        );
+        setMetrics(filtered);
+        renderMetrics();
+      });
+    });
+  }
+
+  function clearMetricForm() {
+    document.getElementById("metricDate").value = "";
+    document.getElementById("m10").value = "";
+    document.getElementById("m20").value = "";
+    document.getElementById("mRepeat").value = "";
+    document.getElementById("mVert").value = "";
+  }
+
+  // ---------- WIRING ----------
+  const weekDateInput = document.getElementById("weekDate");
+  const weekKeyPill = document.getElementById("weekKeyPill");
+  const ptPill = document.getElementById("ptPill");
+  const ptLabel = document.getElementById("ptLabel");
+
+  function refreshWeekContext() {
+    const weekKey = getWeekKey(weekDateInput.value);
+    weekKeyPill.textContent = weekKey || "—";
+
+    if (weekKey) {
+      const letter = getPTLetter(weekKey);
+      ptPill.textContent = letter;
+      ptLabel.textContent = letter;
+
+      loadWeek(weekKey);
+    } else {
+      ptPill.textContent = "—";
+      ptLabel.textContent = "—";
+      clearWeekUI();
+    }
+  }
+
+  // When date changes: switch week context (load different stored week)
+  weekDateInput.addEventListener("change", refreshWeekContext);
+
+  // Auto-save whenever user changes a checkbox or note (per weekKey)
+  document.querySelectorAll('#week [data-field]').forEach(el => {
+    el.addEventListener("input", () => {
+      const weekKey = getWeekKey(weekDateInput.value);
+      saveWeek(weekKey);
+    });
+    el.addEventListener("change", () => {
+      const weekKey = getWeekKey(weekDateInput.value);
+      saveWeek(weekKey);
+    });
+  });
+
+  // Metrics buttons
+  document.getElementById("addMetric").addEventListener("click", () => {
+    const date = document.getElementById("metricDate").value;
+    if (!date) { alert("Pick a date for the check-in."); return; }
+
+    const entry = {
+      date,
+      s10: document.getElementById("m10").value,
+      s20: document.getElementById("m20").value,
+      repeat: document.getElementById("mRepeat").value,
+      vert: document.getElementById("mVert").value
+    };
+
+    const list = getMetrics();
+    list.push(entry);
+    setMetrics(list);
+    renderMetrics();
+    clearMetricForm();
+  });
+
+  document.getElementById("clearMetric").addEventListener("click", clearMetricForm);
+
+  // Initial setup: default to today and load correct week
+  (function init() {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2,"0");
+    const dd = String(today.getDate()).padStart(2,"0");
+    weekDateInput.value = `${yyyy}-${mm}-${dd}`;
+
+    refreshWeekContext();
+    renderMetrics();
+
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js");
+    }
+  })();
+</script>
+
+</body>
+</html>
