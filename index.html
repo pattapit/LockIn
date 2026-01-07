@@ -15,10 +15,12 @@
   --good:#137333;
   --bad:#b00020;
 }
+
 body{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   margin:0;background:#fff;color:#111;
 }
+
 header{
   padding:16px;border-bottom:1px solid var(--line);
   position:sticky;top:0;background:#fff;z-index:10;
@@ -75,6 +77,7 @@ textarea{
   border-radius:999px;
   font-size:12px;
 }
+
 .pill-pt{
   display:inline-block;
   border:1px solid var(--purple);
@@ -102,6 +105,7 @@ textarea{
   margin-top:10px;
 }
 
+/* Progress UI */
 .kpi{
   display:grid;
   grid-template-columns: 1fr;
@@ -257,6 +261,7 @@ hr.sep{border:none;border-top:1px dashed var(--line);margin:12px 0;}
           <li>Squat jumps: <b>6–8 reps</b></li>
           <li>Pogo jumps (both legs): <b>20 reps</b></li>
           <li>Skater jumps: <b>6 reps per side</b></li>
+          <li><b>Rest 45–60s between rounds</b></li>
         </ul>
       </li>
       <li><b>Optional finisher:</b> 4 × 20y “fast but clean”. Rest ~45–60s.</li>
@@ -276,6 +281,9 @@ hr.sep{border:none;border-top:1px dashed var(--line);margin:12px 0;}
         </ul>
       </li>
     </ul>
+    <div class="tiny">
+      Dead bug = on your back, arms up, knees 90°. Extend opposite arm+leg while keeping low back flat.
+    </div>
   </div>
 
   <div class="card">
@@ -304,7 +312,6 @@ function getWeekKey(d){
   x.setDate(x.getDate()-(day===0?6:day-1));
   return x.toISOString().slice(0,10);
 }
-
 function getPT(k){
   const base=new Date("2026-01-05");
   const diffWeeks = Math.floor((new Date(k)-base)/6048e5);
@@ -346,48 +353,44 @@ function addMetric(){
   renderMetrics();
   clearMetric();
 }
-
 function clearMetric(){
   metricDate.value="";
   m10.value=""; m20.value=""; mRepeat.value=""; mAgility.value="";
 }
-
 function fmt(n){
   return (Number.isFinite(n) ? n.toFixed(2) : "—");
 }
 
-function deltaBlock(label, base, best, latest, lowerIsBetter=true){
-  if(!Number.isFinite(latest)){
-    return `<div class="kpi-block"><div class="kpi-title">${label}</div><div class="tiny">Need numbers.</div></div>`;
+function progressLine(title, fromVal, latestVal, lowerIsBetter=true){
+  if(!Number.isFinite(fromVal) || !Number.isFinite(latestVal)){
+    return `<div class="kpi-row"><b>${title}</b><span>—</span></div>`;
   }
+  const delta = latestVal - fromVal;
+  const pct = (fromVal !== 0) ? (delta / fromVal) * 100 : 0;
 
-  function line(title, fromVal){
-    if(!Number.isFinite(fromVal) || !Number.isFinite(latest)) return "";
-    const d = latest - fromVal;
-    const pct = (fromVal !== 0) ? (d / fromVal) * 100 : 0;
+  const improved = lowerIsBetter ? (delta < 0) : (delta > 0);
+  const cls = improved ? "good" : (delta===0 ? "" : "bad");
+  const arrow = improved ? "⬆️" : (delta===0 ? "➡️" : "⬇️");
 
-    const improved = lowerIsBetter ? (d < 0) : (d > 0);
-    const cls = improved ? "good" : (d===0 ? "" : "bad");
-    const arrow = improved ? "⬆️" : (d===0 ? "➡️" : "⬇️");
+  const dStr = (delta>=0?"+":"") + delta.toFixed(2);
+  const pStr = (pct>=0?"+":"") + pct.toFixed(1) + "%";
 
-    const dStr = (d>=0?"+":"") + d.toFixed(2);
-    const pStr = (pct>=0?"+":"") + pct.toFixed(1) + "%";
+  return `<div class="kpi-row"><b>${title}</b><span>${fmt(fromVal)} → ${fmt(latestVal)} &nbsp; <span class="${cls}">${dStr}</span> (${pStr}) ${arrow}</span></div>`;
+}
 
-    return `<div class="kpi-row"><b>${title}</b><span>${fmt(fromVal)} → ${fmt(latest)} &nbsp; <span class="${cls}">${dStr}</span> (${pStr}) ${arrow}</span></div>`;
-  }
-
+function metricBlock(label, base, best, latest){
   return `
     <div class="kpi-block">
       <div class="kpi-title">${label}</div>
-      ${line("Baseline → Latest", base)}
-      ${line("Best → Latest", best)}
+      ${progressLine("Baseline → Latest", base, latest, true)}
+      ${progressLine("Best → Latest", best, latest, true)}
     </div>`;
 }
 
 function renderMetrics(){
   const list=getMetrics().filter(x=>x.date).sort((a,b)=>a.date.localeCompare(b.date));
 
-  // list display (newest on top)
+  // list display (newest first)
   metricList.innerHTML="";
   const newestFirst=[...list].sort((a,b)=>b.date.localeCompare(a.date));
   newestFirst.forEach(m=>{
@@ -406,7 +409,6 @@ function renderMetrics(){
   const base = list[0];
   const latest = list[list.length-1];
 
-  // best = lowest time for all metrics here
   function bestOf(field){
     const vals = list.map(x => x[field]).filter(v => Number.isFinite(v));
     return vals.length ? Math.min(...vals) : null;
@@ -418,10 +420,10 @@ function renderMetrics(){
   const bestAgi = bestOf("agi");
 
   progress.innerHTML =
-    deltaBlock("10y Sprint (sec)", base.s10, best10, latest.s10, true) +
-    deltaBlock("20y Sprint (sec)", base.s20, best20, latest.s20, true) +
-    deltaBlock("Repeat Sprint total (sec)", base.rep, bestRep, latest.rep, true) +
-    deltaBlock("5-10-5 Shuttle (sec)", base.agi, bestAgi, latest.agi, true);
+    metricBlock("10y Sprint (sec)", base.s10, best10, latest.s10) +
+    metricBlock("20y Sprint (sec)", base.s20, best20, latest.s20) +
+    metricBlock("Repeat Sprint total (sec)", base.rep, bestRep, latest.rep) +
+    metricBlock("5-10-5 Shuttle (sec)", base.agi, bestAgi, latest.agi);
 }
 
 /* reference highlight */
