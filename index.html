@@ -1,118 +1,149 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="theme-color" content="#E20074" />
-  <link rel="manifest" href="manifest.json">
-  <title>GA Training Tracker</title>
+  <link rel="manifest" href="manifest.json" />
+  <title>LockIn</title>
 
   <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-      margin: 0;
-      padding: 16px;
-      background: #fff;
-      color: #111;
-    }
-    h1, h2 { color: #E20074; }
-    section {
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      padding: 12px;
-      margin-bottom: 16px;
-    }
-    label {
-      display: block;
-      margin: 6px 0;
-    }
-    textarea, input[type="number"], input[type="date"] {
-      width: 100%;
-      margin-top: 6px;
-    }
-    nav button {
-      margin-right: 8px;
-    }
+    :root { --magenta:#E20074; --line:#e6e6e6; --muted:#666; }
+    body { font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; margin:0; color:#111; background:#fff; }
+    header { padding:16px; border-bottom:1px solid var(--line); position:sticky; top:0; background:#fff; z-index:10; }
+    h1 { margin:0; color:var(--magenta); font-size:22px; }
+    .sub { color:var(--muted); font-size:12px; margin-top:4px; }
+    nav { padding:12px 16px; display:flex; gap:8px; border-bottom:1px solid var(--line); background:#fff; position:sticky; top:66px; z-index:9; }
+    button { border:1px solid var(--line); background:#fff; border-radius:10px; padding:8px 10px; font-weight:700; }
+    button.active { border-color:var(--magenta); color:var(--magenta); }
+    main { padding:16px; max-width:840px; margin:0 auto; }
+    .card { border:1px solid var(--line); border-radius:14px; padding:12px; margin:12px 0; }
+    .card h2 { margin:0 0 10px; font-size:14px; color:var(--magenta); }
+    label { display:flex; gap:10px; align-items:flex-start; padding:6px 0; }
+    input[type="checkbox"] { width:18px; height:18px; margin-top:2px; accent-color: var(--magenta); }
+    input[type="date"], input[type="number"], input[type="text"] { padding:10px 12px; border:1px solid var(--line); border-radius:10px; width:100%; }
+    textarea { width:100%; min-height:70px; padding:10px 12px; border:1px solid var(--line); border-radius:10px; }
+    .row { display:flex; gap:12px; flex-wrap:wrap; }
+    .row > div { flex:1; min-width:220px; }
+    .tiny { color:var(--muted); font-size:12px; margin-top:8px; }
+    .pill { display:inline-block; background:#f5f5f7; border:1px solid var(--line); padding:2px 8px; border-radius:999px; font-size:12px; }
+    .metrics-grid { display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap:10px; }
+    .metrics-grid label { display:block; padding:0; }
+    .metrics-grid span { display:block; font-size:12px; color:var(--muted); margin-bottom:6px; }
+    .list { border-top:1px dashed var(--line); margin-top:12px; padding-top:12px; }
+    .list-item { border:1px solid var(--line); border-radius:12px; padding:10px; margin:10px 0; }
+    .list-item .hdr { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+    .danger { border:1px solid #f1c0c0; background:#fff5f5; }
+    .btn-primary { background:var(--magenta); border-color:var(--magenta); color:#fff; }
+    .btn-row { display:flex; gap:10px; flex-wrap:wrap; }
+    a { color:var(--magenta); }
   </style>
 </head>
 
 <body>
+  <header>
+    <h1>LockIn</h1>
+    <div class="sub">Weekly checkboxes + metrics check-ins. Saves on-device.</div>
+  </header>
 
-<h1>GA Training Tracker</h1>
+  <nav>
+    <button id="tab-week" class="active" onclick="showTab('week')">Week</button>
+    <button id="tab-metrics" onclick="showTab('metrics')">Metrics</button>
+    <button id="tab-reference" onclick="showTab('reference')">Reference</button>
+  </nav>
 
-<nav>
-  <button onclick="show('week')">Week</button>
-  <button onclick="show('metrics')">Metrics</button>
-  <button onclick="show('reference')">Reference</button>
-</nav>
+  <main>
+    <!-- WEEK TAB -->
+    <section id="week">
+      <div class="card">
+        <h2>Week selector</h2>
+        <div class="row">
+          <div>
+            <div class="tiny">Pick any date in the week (it will lock to Monday automatically).</div>
+            <input type="date" id="weekDate" />
+          </div>
+          <div>
+            <div class="tiny">This week key (stored as):</div>
+            <div class="pill" id="weekKeyPill">—</div>
+            <div class="tiny">Monday PT for this week: <span class="pill" id="ptPill">—</span></div>
+          </div>
+        </div>
+      </div>
 
-<section id="week">
-  <h2>Week of <input type="date" id="weekStart"></h2>
+      <div class="card">
+        <h2>Week checklist</h2>
 
-  <label><input type="checkbox"> Monday Practice</label>
-  <label><input type="checkbox" id="ptBox"> Monday PT – <span id="ptLabel"></span></label>
-  <label><input type="checkbox"> Tuesday Homework</label>
-  <label><input type="checkbox"> Wednesday Carlos</label>
-  <label><input type="checkbox"> Thursday Practice</label>
+        <label><input type="checkbox" data-field="monPractice"> Monday Practice</label>
+        <label><input type="checkbox" data-field="monPT"> Monday PT – <span id="ptLabel">—</span></label>
 
-  <h3>Saturday Game Notes</h3>
-  <textarea></textarea>
+        <label><input type="checkbox" data-field="tueHomework"> Tuesday Homework</label>
+        <label><input type="checkbox" data-field="wedCarlos"> Wednesday Carlos</label>
+        <label><input type="checkbox" data-field="thuPractice"> Thursday Practice</label>
 
-  <h3>Weekly</h3>
-  <label><input type="checkbox"> Carlos Training Completed</label>
-  <textarea placeholder="Weekly notes (fresh / ok / tired)"></textarea>
-</section>
+        <div class="tiny">Saturday Game Notes</div>
+        <textarea data-field="satNotes" placeholder="One sentence is enough."></textarea>
 
-<section id="metrics" style="display:none">
-  <h2>Metric Check-In</h2>
-  <input type="date">
-  <label>10y Sprint <input type="number"></label>
-  <label>20y Sprint <input type="number"></label>
-  <label>Repeat Sprint <input type="number"></label>
-  <label>Vertical Jump <input type="number"></label>
-</section>
+        <div class="tiny" style="margin-top:10px;">Weekly</div>
+        <label><input type="checkbox" data-field="weeklyCarlosDone"> Carlos training completed (any day)</label>
+        <textarea data-field="weeklyNotes" placeholder="Weekly notes (fresh / ok / tired + 1 thought)"></textarea>
+      </div>
 
-<section id="reference" style="display:none">
-  <h2>Monday A – Acceleration & Power</h2>
-  <ul>
-    <li>6–8 × 10–20y sprints</li>
-    <li>Plyo: squat jumps, pogo jumps, skater jumps</li>
-    <li>Optional: 4 × 20y fast</li>
-  </ul>
+      <div class="tiny">Auto-saves. No “Save” button because we’re not making this harder than it needs to be.</div>
+    </section>
 
-  <h2>Monday B – RSA (Soccer Gas)</h2>
-  <ul>
-    <li>4 × 10y accelerations</li>
-    <li>2–3 sets of 20–40–60</li>
-    <li>Short core (5 min)</li>
-  </ul>
+    <!-- METRICS TAB -->
+    <section id="metrics" style="display:none;">
+      <div class="card">
+        <h2>Metric check-in</h2>
+        <div class="row">
+          <div>
+            <div class="tiny">Date</div>
+            <input type="date" id="metricDate" />
+          </div>
+          <div class="tiny">Tip: use the date you actually measured, not “whenever Dad remembered.”</div>
+        </div>
 
-  <h2>Monday C – COD + Speed Endurance</h2>
-  <ul>
-    <li>5–10–5 or L-drill</li>
-    <li>6 × 30s hard / 60s easy</li>
-    <li>Pogo jumps</li>
-  </ul>
-</section>
+        <div class="metrics-grid" style="margin-top:10px;">
+          <label><span>10y Sprint (sec)</span><input type="number" step="0.01" id="m10" /></label>
+          <label><span>20y Sprint (sec)</span><input type="number" step="0.01" id="m20" /></label>
+          <label><span>Repeat Sprint (sec / total)</span><input type="number" step="0.01" id="mRepeat" /></label>
+          <label><span>Vertical Jump (in)</span><input type="number" step="0.1" id="mVert" /></label>
+        </div>
 
-<script>
-  function show(id) {
-    ['week','metrics','reference'].forEach(s =>
-      document.getElementById(s).style.display = s === id ? 'block' : 'none'
-    );
-  }
+        <div class="btn-row" style="margin-top:12px;">
+          <button class="btn-primary" id="addMetric">Add check-in</button>
+          <button id="clearMetric" class="danger">Clear form</button>
+        </div>
 
-  function updatePT() {
-    const start = new Date(document.getElementById('weekStart').value);
-    const base = new Date('2026-01-05'); // first Monday
-    const diffWeeks = Math.floor((start - base) / (1000*60*60*24*7));
-    const letters = ['A','B','C'];
-    document.getElementById('ptLabel').textContent =
-      letters[(diffWeeks % 3 + 3) % 3];
-  }
+        <div class="list" id="metricList">
+          <div class="tiny">No entries yet. First check-in = instant motivation.</div>
+        </div>
+      </div>
+    </section>
 
-  document.getElementById('weekStart').addEventListener('change', updatePT);
-</script>
+    <!-- REFERENCE TAB -->
+    <section id="reference" style="display:none;">
+      <div class="card">
+        <h2>Monday PT Reference</h2>
 
-</body>
-</html>
+        <div class="card" style="margin:0 0 10px;">
+          <h2>A — Acceleration & Power</h2>
+          <ul>
+            <li>6–8 × 10–20y sprints (full rest)</li>
+            <li>Plyo circuit (2 rounds): squat → jump (6–8), pogo jumps (20s), skater jumps (6/side)</li>
+            <li>Optional: 4 × 20y fast, clean form</li>
+          </ul>
+        </div>
+
+        <div class="card" style="margin:0 0 10px;">
+          <h2>B — RSA (Soccer Gas)</h2>
+          <ul>
+            <li>4 × 10y accelerations</li>
+            <li>2–3 sets of 20–40–60 (jog backs)</li>
+            <li>90s rest between sets</li>
+            <li>Short core (5 min): plank / side plank / dead bugs (pick 2–3)</li>
+          </ul>
+        </div>
+
+        <div class="card" style="margin:0;">
+          <h2
