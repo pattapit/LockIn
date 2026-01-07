@@ -1,0 +1,8 @@
+{
+  "name": "GA Training Tracker",
+  "short_name": "GA Tracker",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#E20074",
+  "background_color": "#ffffff"
+}
