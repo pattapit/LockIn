@@ -3,162 +3,216 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>AthleteFuel 80/20</title>
+  <title>AthleteFuel Pro</title>
   <style>
     :root {
-      --purple: #4B2E83; /* Using your Husky Purple for consistency */
-      --gold: #B7A57A;
-      --primary: #2e7d32; 
-      --junk: #b00020; 
+      --purple: #4B2E83; --gold: #B7A57A;
+      --good: #2e7d32; --warn: #fbc02d; --bad: #b00020;
       --bg: #f4f7f6;
-      --card: #ffffff;
     }
-    body { font-family: -apple-system, sans-serif; background: var(--bg); margin: 0; padding: 16px; padding-bottom: 40px; }
-    header { text-align: center; margin-bottom: 15px; }
-    h1 { margin: 0; color: var(--purple); font-size: 22px; }
+    body { font-family: -apple-system, sans-serif; background: var(--bg); margin: 0; padding: 0; }
     
-    .score-card { background: var(--card); border-radius: 16px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: center; margin-bottom: 15px; border: 1px solid #e6e6e6; }
-    
-    /* Percentage Bar */
-    .progress-container { background: #eee; border-radius: 999px; height: 28px; margin: 12px 0; overflow: hidden; position: relative; border: 1px solid #ddd; }
-    .progress-fill { background: linear-gradient(90deg, var(--primary), #81c784); height: 100%; transition: width 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-    .goal-line { position: absolute; left: 80%; top: 0; bottom: 0; width: 2px; background: rgba(0,0,0,0.4); z-index: 2; }
-    
-    .numbers { display: flex; justify-content: space-around; margin-top: 10px; }
-    .num-box { flex: 1; }
-    .num-box b { font-size: 24px; display: block; color: var(--purple); }
-    .num-box span { font-size: 11px; color: #666; text-transform: uppercase; font-weight: bold; }
+    /* Navigation */
+    nav { display: flex; background: #fff; border-bottom: 1px solid #ddd; position: sticky; top: 0; z-index: 10; }
+    nav button { flex: 1; padding: 15px; border: none; background: none; font-weight: bold; color: #666; cursor: pointer; }
+    nav button.active { color: var(--purple); border-bottom: 3px solid var(--purple); }
 
-    /* Coaching Tip Box */
-    #coach-box { background: #fffde7; border-left: 5px solid #fbc02d; padding: 12px; border-radius: 8px; margin-bottom: 15px; font-size: 13px; font-style: italic; color: #555; min-height: 40px; display: flex; align-items: center; }
+    .page { display: none; padding: 16px; animation: fadeIn 0.3s; }
+    .page.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-    /* Buttons */
-    .fuel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .fuel-btn { border: none; border-radius: 14px; padding: 14px; font-weight: bold; color: white; cursor: pointer; text-align: left; position: relative; }
-    .fuel-btn span { display: block; font-size: 10px; opacity: 0.8; margin-top: 4px; font-weight: normal; }
-    
-    .btn-protein { background: #1565c0; } 
-    .btn-veggie { background: var(--primary); }  
-    .btn-carb { background: #fbc02d; color: #333; }   
-    .btn-junk { background: var(--junk); }
-    .btn-water { background: #00acc1; grid-column: span 2; text-align: center; font-size: 18px; }
+    /* Score Card */
+    .score-card { background: #fff; border-radius: 16px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: center; margin-bottom: 15px; border: 1px solid #e6e6e6; }
+    .progress-container { background: #eee; border-radius: 999px; height: 32px; margin: 12px 0; overflow: hidden; position: relative; }
+    #bar { height: 100%; transition: width 0.5s ease; width: 0%; }
+    .goal-line { position: absolute; left: 80%; top: 0; bottom: 0; width: 2px; background: rgba(0,0,0,0.3); z-index: 2; }
 
-    .history { margin-top: 20px; background: white; border-radius: 12px; padding: 12px; border: 1px solid #e6e6e6; }
-    .history-item { border-bottom: 1px solid #eee; padding: 6px 0; display: flex; justify-content: space-between; font-size: 13px; }
-    .btn-reset { margin-top: 15px; width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; background: #fff; font-size: 12px; font-weight: bold; color: #999; }
+    /* Stacked Buttons */
+    .fuel-list { display: flex; flex-direction: column; gap: 10px; }
+    .fuel-item { display: flex; align-items: center; background: #fff; border: 1px solid #ddd; border-radius: 12px; overflow: hidden; cursor: pointer; text-align: left; padding: 0; width: 100%; }
+    .points { width: 60px; height: 70px; display: flex; align-items: center; justify-content: center; font-weight: 900; color: #fff; font-size: 18px; }
+    .info { padding: 10px; flex: 1; }
+    .info b { display: block; font-size: 15px; color: #333; }
+    .info span { font-size: 11px; color: #777; }
+
+    /* Colors */
+    .p-power { background: var(--good); }
+    .p-fruit { background: #43a047; }
+    .p-slow { background: #1565c0; }
+    .p-fast { background: var(--warn); color: #333 !important; }
+    .p-fun { background: var(--bad); }
+
+    /* History Chips */
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; }
+    .chip { background: #eee; padding: 5px 10px; border-radius: 999px; font-size: 11px; display: flex; align-items: center; gap: 5px; border: 1px solid #ccc; }
+    .chip button { border: none; background: none; color: var(--bad); font-weight: bold; cursor: pointer; }
+
+    /* Chart Styles */
+    .chart { display: flex; align-items: flex-end; gap: 8px; height: 100px; margin-top: 20px; padding-bottom: 20px; border-bottom: 1px solid #eee; }
+    .bar-day { flex: 1; background: #ddd; border-radius: 4px 4px 0 0; position: relative; min-height: 5px; }
+    .bar-day span { position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 9px; font-weight: bold; }
+
+    /* Reference Page Styles */
+    .ref-card { background: #fff; border-radius: 12px; padding: 15px; margin-bottom: 15px; border-left: 6px solid #ccc; }
+    .ref-card h3 { margin: 0 0 5px; font-size: 16px; }
+    .ref-card p { margin: 5px 0; font-size: 13px; color: #555; line-height: 1.4; }
   </style>
 </head>
 <body>
 
-<header>
-  <h1>Athlete Fuel Tracker</h1>
-</header>
+<nav>
+  <button id="btn-main" class="active" onclick="showPage('main')">FUEL TRACKER</button>
+  <button id="btn-ref" onclick="showPage('ref')">THE PLAYBOOK</button>
+</nav>
 
 <main>
-  <div class="score-card">
-    <div id="status-msg" style="font-weight: 900; font-size: 16px; letter-spacing: 1px;">ELITE STATUS PENDING...</div>
-    <div class="progress-container">
-      <div class="goal-line"></div>
-      <div id="bar" class="progress-fill" style="width: 0%"></div>
+  <section id="main" class="page active">
+    <div class="score-card">
+      <div id="status-msg" style="font-weight: 900; font-size: 16px;">READY TO FUEL?</div>
+      <div class="progress-container">
+        <div class="goal-line"></div>
+        <div id="bar"></div>
+      </div>
+      <div style="font-size: 24px; font-weight: 900; color: var(--purple);" id="current-pct">0%</div>
+      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #999;">Engine Grade</div>
     </div>
-    <div class="numbers">
-      <div class="num-box"><b id="current-pct">0%</b><span>Fuel Grade</span></div>
-      <div class="num-box"><b id="count-good">0</b><span>Performance</span></div>
-      <div class="num-box"><b id="count-bad">0</b><span>Fun Fuel</span></div>
-      <div class="num-box"><b id="count-water">0</b><span>Water</span></div>
+
+    <div class="fuel-list">
+      <button class="fuel-item" onclick="log(3, 'Power')">
+        <div class="points p-power">+3</div>
+        <div class="info"><b>POWER</b><span>Protein & Veggies (Chicken, Carrots, Eggs)</span></div>
+      </button>
+      <button class="fuel-item" onclick="log(2, 'Fruit')">
+        <div class="points p-fruit">+2</div>
+        <div class="info"><b>FRUIT</b><span>Berries, Banana, Apples, Grapes</span></div>
+      </button>
+      <button class="fuel-item" onclick="log(2, 'Slow')">
+        <div class="points p-slow">+2</div>
+        <div class="info"><b>SLOW BURN</b><span>Athletic Carbs (Oats, Protein Pasta)</span></div>
+      </button>
+      <button class="fuel-item" onclick="log(1, 'Fast')">
+        <div class="points p-fast">+1</div>
+        <div class="info"><b>FAST BURN</b><span>White Rice, Plain Pasta, Bagels</span></div>
+      </button>
+      <button class="fuel-item" onclick="log(-3, 'Fun')">
+        <div class="points p-fun">-3</div>
+        <div class="info"><b>FUN FUEL</b><span>Candy, Soda, Chips, "The Crap"</span></div>
+      </button>
     </div>
-  </div>
 
-  <div id="coach-box">"Fueling for a 13YO athlete is about power, not restriction. Let's get to 80%!"</div>
+    <div class="chips" id="chips"></div>
 
-  <div class="fuel-grid">
-    <button class="fuel-btn btn-protein" onclick="log('good', 'Protein', 'Nice! Protein repairs your muscles after soccer.')">
-      🍗 Protein
-      <span>Fist-sized portion</span>
-    </button>
-    <button class="fuel-btn btn-veggie" onclick="log('good', 'Veg/Fruit', 'Fiber hack! This keeps your energy stable.')">
-      🥕 Veggie/Fruit
-      <span>Carrots, Cukes, Berries</span>
-    </button>
-    <button class="fuel-btn btn-carb" onclick="log('good', 'Athletic Carb', 'Energy loading! Pair this with protein for a slim waist.')">
-      🍚 Athletic Carb
-      <span>Rice, Pasta, Potato</span>
-    </button>
-    <button class="fuel-btn btn-junk" onclick="log('bad', 'Fun Fuel', 'Enjoy it! Drink a glass of water to balance the sugar spike.')">
-      🍭 Fun Fuel
-      <span>Candy, Soda, Junk</span>
-    </button>
-    <button class="fuel-btn btn-water" onclick="log('water', 'Water', 'Hydration = Focus. 8oz logged!')">
-      💧 Drink 8oz Water
-    </button>
-  </div>
+    <div class="score-card" style="margin-top:20px; padding: 12px;">
+      <b style="font-size: 12px; color: var(--purple);">7-Day Streak</b>
+      <div class="chart" id="chart"></div>
+    </div>
 
-  <div class="history">
-    <b style="font-size: 14px; color: var(--purple);">Activity Log</b>
-    <div id="log-list" style="margin-top:8px;"></div>
-  </div>
+    <button style="width:100%; padding:15px; margin-top:10px; border-radius:12px; border:none; background:var(--purple); color:#fff; font-weight:bold;" onclick="archiveDay()">FINISH DAY & SAVE</button>
+  </section>
 
-  <button class="btn-reset" onclick="resetDay()">Reset for New Day</button>
-  <div style="text-align:center; margin-top:10px; font-size:10px; color:#aaa;">Undo: Refresh page to clear mistakes before reset.</div>
+  <section id="ref" class="page">
+    <h2 style="color: var(--purple);">The Athlete's Playbook</h2>
+    
+    <div class="ref-card" style="border-color: var(--good);">
+      <h3>⚡ POWER (+3)</h3>
+      <p><b>What:</b> Chicken, Steak, Eggs, Greek Yogurt, Carrots, Peppers, Cukes.</p>
+      <p><b>Why:</b> Fixes the tiny tears in your muscles after training so you come back stronger and faster for the next game.</p>
+    </div>
+
+    <div class="ref-card" style="border-color: #43a047;">
+      <h3>🍎 FRUIT (+2)</h3>
+      <p><b>What:</b> All fresh berries, bananas, apples, mango.</p>
+      <p><b>Why:</b> Gives your brain and muscles quick, natural energy without the "sugar crash" that makes your legs feel heavy.</p>
+    </div>
+
+    <div class="ref-card" style="border-color: #1565c0;">
+      <h3>🐢 SLOW BURN (+2)</h3>
+      <p><b>What:</b> Oats, Protein Pasta, Brown Rice, Quinoa.</p>
+      <p><b>Why:</b> Like a giant battery for your body. It drains slowly so you still have "sprint energy" left in the 80th minute.</p>
+    </div>
+
+    <div class="ref-card" style="border-color: var(--warn);">
+      <h3>🚀 FAST BURN (+1)</h3>
+      <p><b>What:</b> White Rice, Plain Pasta, Bagels, Potatoes.</p>
+      <p><b>Why:</b> Pure rocket fuel. Good for right before a game, but it doesn't help your body recover or build muscle.</p>
+    </div>
+
+    <div class="ref-card" style="border-color: var(--bad);">
+      <h3>🍭 FUN FUEL (-3)</h3>
+      <p><b>What:</b> Candy, Soda, Junk Food.</p>
+      <p><b>Why:</b> Tells your body to "store" weight rather than burn it. Enjoy it occasionally, but always pair it with Power fuel!</p>
+    </div>
+  </section>
 </main>
 
 <script>
-  let logs = JSON.parse(localStorage.getItem('athlete_fuel_data') || '[]');
+  let logs = JSON.parse(localStorage.getItem('af_logs') || '[]');
+  let history = JSON.parse(localStorage.getItem('af_history') || '[]');
 
-  function log(type, name, tip) {
-    logs.push({ type, name, tip, time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) });
+  function showPage(p) {
+    document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('nav button').forEach(el => el.classList.remove('active'));
+    document.getElementById(p).classList.add('active');
+    document.getElementById('btn-' + p).classList.add('active');
+  }
+
+  function log(val, label) {
+    logs.push({ val, label, id: Date.now() });
     update();
   }
 
-  function resetDay() {
-    if(confirm("Start a new day? Stats will reset to zero.")) {
-      logs = [];
-      update();
-    }
+  function removeLog(id) {
+    logs = logs.filter(l => l.id !== id);
+    update();
+  }
+
+  function calculateScore() {
+    const activeLogs = logs.filter(l => l.val !== 0);
+    if (activeLogs.length === 0) return 0;
+    let total = activeLogs.reduce((acc, curr) => acc + curr.val, 0);
+    let possible = activeLogs.reduce((acc, curr) => acc + (curr.val > 0 ? curr.val : 0), 0);
+    if (possible === 0) return 0;
+    let final = Math.round((total / possible) * 100);
+    return Math.max(0, Math.min(100, final));
+  }
+
+  function archiveDay() {
+    if (logs.length === 0) return;
+    if (!confirm("Save today's stats to your history?")) return;
+    history.push({ date: new Date().toLocaleDateString('en-US', {weekday: 'short'}), pct: calculateScore() });
+    if (history.length > 7) history.shift();
+    localStorage.setItem('af_history', JSON.stringify(history));
+    logs = [];
+    update();
   }
 
   function update() {
-    localStorage.setItem('athlete_fuel_data', JSON.stringify(logs));
+    localStorage.setItem('af_logs', JSON.stringify(logs));
+    const score = calculateScore();
     
-    const good = logs.filter(l => l.type === 'good').length;
-    const bad = logs.filter(l => l.type === 'bad').length;
-    const water = logs.filter(l => l.type === 'water').length;
-    const total = good + bad;
-    
-    const pct = total === 0 ? 0 : Math.round((good / total) * 100);
-    
-    document.getElementById('bar').style.width = pct + '%';
-    document.getElementById('current-pct').innerText = pct + '%';
-    document.getElementById('count-good').innerText = good;
-    document.getElementById('count-bad').innerText = bad;
-    document.getElementById('count-water').innerText = water;
-    
-    // UI Feedback
+    document.getElementById('current-pct').innerText = score + '%';
+    const bar = document.getElementById('bar');
+    bar.style.width = score + '%';
+    bar.style.backgroundColor = score >= 80 ? 'var(--good)' : (score >= 50 ? 'var(--warn)' : 'var(--bad)');
+
+    // Status Message
     const msg = document.getElementById('status-msg');
-    const coach = document.getElementById('coach-box');
+    if (score >= 80) msg.innerText = "🔥 ELITE ATHLETE";
+    else if (score >= 1) msg.innerText = "💪 POWERING UP";
+    else msg.innerText = "READY TO FUEL?";
 
-    if (total === 0) {
-        msg.innerText = "READY TO FUEL?";
-        msg.style.color = "#999";
-    } else if (pct >= 80) { 
-        msg.innerText = "🔥 ELITE ATHLETE STATUS"; 
-        msg.style.color = "var(--primary)"; 
-    } else { 
-        msg.innerText = "💪 REFUELING..."; 
-        msg.style.color = "var(--gold)"; 
-    }
+    // Render Chips (Undo)
+    document.getElementById('chips').innerHTML = logs.map(l => `
+      <div class="chip">${l.label} <button onclick="removeLog(${l.id})">✕</button></div>
+    `).join('');
 
-    if(logs.length > 0) {
-        coach.innerHTML = `"${logs[logs.length - 1].tip}"`;
-    }
-
-    const list = document.getElementById('log-list');
-    list.innerHTML = logs.slice(-5).reverse().map(l => 
-      `<div class="history-item">
-        <b>${l.name}</b>
-        <span>${l.time}</span>
-      </div>`
-    ).join('') || "No logs yet today.";
+    // Render Chart
+    const chart = document.getElementById('chart');
+    chart.innerHTML = history.map(h => `
+      <div class="bar-day" style="height: ${h.pct}% !important; background: ${h.pct >= 80 ? 'var(--good)' : 'var(--warn)'}">
+        <span>${h.date}</span>
+      </div>
+    `).join('') || "<div style='font-size:10px; color:#999;'>No history yet</div>";
   }
 
   update();
