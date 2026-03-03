@@ -48,10 +48,8 @@
     .bar-day { flex: 1; border-radius: 3px 3px 0 0; position: relative; min-height: 2px; transition: height 0.5s; }
     .bar-day small { position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); font-size: 9px; font-weight: bold; color: #999; }
 
-    /* Playbook Layout */
     .ref-card { background: #fff; border-radius: 12px; padding: 16px; margin-bottom: 12px; border-left: 6px solid #ccc; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-    .ref-card h3 { margin: 0 0 6px; font-size: 17px; display: flex; justify-content: space-between; align-items: center; }
-    .ref-card h3 span { font-size: 14px; background: #eee; padding: 2px 8px; border-radius: 6px; }
+    .ref-card h3 { margin: 0 0 6px; font-size: 16px; color: #333; }
     .ref-card p { margin: 6px 0; font-size: 13px; color: #444; line-height: 1.5; }
     .carb-tell { background: #f9f9f9; padding: 8px; border-radius: 6px; font-size: 12px; border: 1px dashed #ccc; margin-top: 8px; }
   </style>
@@ -83,7 +81,7 @@
       <button class="fuel-item" onclick="log(2, 'Fruit')"><div class="points p-fruit">+2</div><div class="info"><b>FRUIT</b><span>Natural Sugar & Fiber</span></div></button>
       <button class="fuel-item" onclick="log(2, 'Slow')"><div class="points p-slow">+2</div><div class="info"><b>SLOW BURN</b><span>Steady Athletic Carbs</span></div></button>
       <button class="fuel-item" onclick="log(1, 'Fast')"><div class="points p-fast">+1</div><div class="info"><b>FAST BURN</b><span>Quick Energy (Nitro)</span></div></button>
-      <button class="fuel-item" onclick="log(-3, 'Fun')"><div class="points p-fun">-3</div><div class="info"><b>FUN FUEL</b><span>Sugar / Junk / Spikes</span></div></button>
+      <button class="fuel-item" onclick="log(-3, 'Fun')"><div class="points p-fun">-3</div><div class="info"><b>FUN FUEL</b><span>Empty Snacks / Spikes</span></div></button>
       <button class="fuel-item" onclick="log(0, 'Water')"><div class="points p-h2o">💧</div><div class="info"><b>WATER</b><span>8oz Glass (Engine Coolant)</span></div></button>
     </div>
 
@@ -104,37 +102,40 @@
     <h2 style="color: var(--purple); margin-top: 0;">The Athlete's Playbook</h2>
     
     <div class="ref-card" style="border-color: var(--good);">
-      <h3>⚡ POWER <span>+3</span></h3>
-      <p><b>Identify:</b> Anything that was once an animal (meat/eggs) or is a crunchy veggie.</p>
-      <p><b>Impact:</b> Essential for repairing muscle fibers after training. High-density fuel that keeps your engine stable and prevents "heavy legs."</p>
+      <h3>⚡ POWER (+3)</h3>
+      <p><b>Identify:</b> Anything that was once an animal (Chicken, steak, salmon, eggs, cottage cheese, Greek yogurt) or grows in the ground and is crunchy (Carrots, cucumbers, peppers, celery).</p>
+      <p><b>Impact:</b> Essential for repairing muscle fibers after heavy training. High-density fuel that keeps your engine stable and helps prevent that "heavy legs" feeling.</p>
     </div>
 
     <div class="ref-card" style="border-color: #43a047;">
-      <h3>🍎 FRUIT <span>+2</span></h3>
-      <p><b>Identify:</b> Anything naturally sweet from a tree or vine (Berries, bananas, apples, mango).</p>
-      <p><b>Impact:</b> Nature's energy source. Provides quick fuel for the brain and muscles without the sugar crash.</p>
+      <h3>🍎 FRUIT (+2)</h3>
+      <p><b>Identify:</b> Anything naturally sweet from a tree, vine, or bush (Berries, bananas, apples, mango, grapes, applesauce).</p>
+      <p><b>Impact:</b> Nature's energy source. Provides quick fuel for the brain and muscles during long days without a sugar crash.</p>
     </div>
 
     <div class="ref-card" style="border-color: #1565c0;">
-      <h3>🐢 SLOW BURN <span>+2</span></h3>
-      <div class="carb-tell"><b>The Tell:</b> Usually brown, grainy, or hearty. Takes longer to chew. (Oats, protein pasta, brown rice, quinoa).</div>
-      <p><b>Impact:</b> Sustained energy. This is the fuel that keeps you running and sprinting in the 2nd half of a game.</p>
+      <h3>🐢 SLOW BURN (+2)</h3>
+      <div class="carb-tell"><b>The Tell:</b> Usually brown, grainy, or hearty. Takes longer to chew and feels "heavy."</div>
+      <p><b>Identify:</b> Oats, Protein Pasta (Barilla+), brown rice, quinoa, sweet potatoes, whole-wheat bread.</p>
+      <p><b>Impact:</b> Sustained energy. Like a big battery, this keeps you running and sprinting at full speed in the 2nd half of a game.</p>
     </div>
 
     <div class="ref-card" style="border-color: var(--warn);">
-      <h3>🚀 FAST BURN <span>+1</span></h3>
-      <div class="carb-tell"><b>The Tell:</b> Usually white, fluffy, or soft. Melts in your mouth. (White rice, bagels, potatoes).</div>
-      <p><b>Impact:</b> Immediate energy. Use these as a "top-off" for quick energy right before training or a game.</p>
+      <h3>🚀 FAST BURN (+1)</h3>
+      <div class="carb-tell"><b>The Tell:</b> Usually white, fluffy, or soft. Melts in your mouth and digests fast.</div>
+      <p><b>Identify:</b> White rice, bagels, plain pasta, uncrustables, white potatoes, pretzels.</p>
+      <p><b>Impact:</b> Immediate energy nitro boost. Great for right before training or at halftime.</p>
     </div>
 
     <div class="ref-card" style="border-color: var(--water);">
-      <h3>💧 WATER <span>Target: 8</span></h3>
-      <p><b>Impact:</b> Essential for focus and temperature control. Keeps the engine cool and the brain sharp for quick decision-making on the field.</p>
+      <h3>💧 WATER (Target: 8)</h3>
+      <p><b>Identify:</b> 8oz glass of plain water.</p>
+      <p><b>Impact:</b> Essential for focus and temperature control. Keeps the brain sharp for making quick split-second decisions on the field.</p>
     </div>
 
     <div class="ref-card" style="border-color: var(--bad);">
-      <h3>🍭 FUN FUEL <span>-3</span></h3>
-      <p><b>Identify:</b> Factory-made sugar and "Empty" snacks (Candy, soda, junk food).</p>
+      <h3>🍭 FUN FUEL (-3)</h3>
+      <p><b>Identify:</b> Factory-made sugar and "Empty Snacks" (Candy, soda, donuts, processed chips).</p>
       <p><b>Impact:</b> High spike energy that drains quickly. Tells your body to store energy as fat rather than burn it for performance. Fine for fun—just balance it later!</p>
     </div>
   </section>
