@@ -22,7 +22,6 @@
 
     .score-card { background: #fff; border-radius: 16px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: center; margin-bottom: 15px; border: 1px solid #e6e6e6; }
     
-    /* Progress Bars */
     .prog-label { font-size: 10px; font-weight: bold; text-align: left; margin-bottom: 4px; color: #666; display: flex; justify-content: space-between;}
     .progress-container { background: #eee; border-radius: 999px; height: 24px; margin-bottom: 12px; overflow: hidden; position: relative; border: 1px solid #ddd; }
     .bar { height: 100%; transition: width 0.6s ease; width: 0%; }
@@ -43,15 +42,18 @@
     .chip { background: #fff; padding: 4px 10px; border-radius: 999px; font-size: 11px; display: flex; align-items: center; gap: 6px; border: 1px solid #ddd; }
     .chip button { border: none; background: #eee; color: var(--bad); font-weight: bold; border-radius: 50%; width: 16px; height: 16px; cursor: pointer; display:flex; align-items:center; justify-content:center; font-size:10px;}
 
-    /* History Charts */
     .history-card { background: #fff; border-radius: 16px; padding: 15px; border: 1px solid #e6e6e6; margin-top: 20px; }
     .chart-box { display: flex; flex-direction: column; gap: 15px; margin-top: 10px; }
     .chart-group { display: flex; align-items: flex-end; gap: 8px; height: 60px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
     .bar-day { flex: 1; border-radius: 3px 3px 0 0; position: relative; min-height: 2px; transition: height 0.5s; }
     .bar-day small { position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); font-size: 9px; font-weight: bold; color: #999; }
 
-    .ref-card { background: #fff; border-radius: 12px; padding: 14px; margin-bottom: 10px; border-left: 5px solid #ccc; font-size: 13px; }
-    .ref-card h3 { margin: 0 0 4px; font-size: 15px; }
+    /* Playbook Layout */
+    .ref-card { background: #fff; border-radius: 12px; padding: 16px; margin-bottom: 12px; border-left: 6px solid #ccc; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+    .ref-card h3 { margin: 0 0 6px; font-size: 17px; display: flex; justify-content: space-between; align-items: center; }
+    .ref-card h3 span { font-size: 14px; background: #eee; padding: 2px 8px; border-radius: 6px; }
+    .ref-card p { margin: 6px 0; font-size: 13px; color: #444; line-height: 1.5; }
+    .carb-tell { background: #f9f9f9; padding: 8px; border-radius: 6px; font-size: 12px; border: 1px dashed #ccc; margin-top: 8px; }
   </style>
 </head>
 <body>
@@ -99,12 +101,42 @@
   </section>
 
   <section id="ref" class="page">
-    <h2 style="color: var(--purple); margin-top:0;">The Reference Guide</h2>
-    <div class="ref-card" style="border-color: var(--good);"><h3>⚡ POWER (+3)</h3><p>Chicken, eggs, carrots. Repairs muscle fibers after soccer.</p></div>
-    <div class="ref-card" style="border-color: #1565c0;"><h3>🐢 SLOW BURN (+2)</h3><p>Oats, protein pasta. Steady energy for the 2nd half.</p></div>
-    <div class="ref-card" style="border-color: var(--warn);"><h3>🚀 FAST BURN (+1)</h3><p>White rice, bagels. Quick energy for right before a game.</p></div>
-    <div class="ref-card" style="border-color: var(--water);"><h3>💧 WATER (Target: 8)</h3><p>Keeps the engine cool and the brain sharp for decision-making.</p></div>
-    <div class="ref-card" style="border-color: var(--bad);"><h3>🍭 FUN FUEL (-3)</h3><p>Candy, soda. High spike energy that drains quickly.</p></div>
+    <h2 style="color: var(--purple); margin-top: 0;">The Athlete's Playbook</h2>
+    
+    <div class="ref-card" style="border-color: var(--good);">
+      <h3>⚡ POWER <span>+3</span></h3>
+      <p><b>Identify:</b> Anything that was once an animal (meat/eggs) or is a crunchy veggie.</p>
+      <p><b>Impact:</b> Essential for repairing muscle fibers after training. High-density fuel that keeps your engine stable and prevents "heavy legs."</p>
+    </div>
+
+    <div class="ref-card" style="border-color: #43a047;">
+      <h3>🍎 FRUIT <span>+2</span></h3>
+      <p><b>Identify:</b> Anything naturally sweet from a tree or vine (Berries, bananas, apples, mango).</p>
+      <p><b>Impact:</b> Nature's energy source. Provides quick fuel for the brain and muscles without the sugar crash.</p>
+    </div>
+
+    <div class="ref-card" style="border-color: #1565c0;">
+      <h3>🐢 SLOW BURN <span>+2</span></h3>
+      <div class="carb-tell"><b>The Tell:</b> Usually brown, grainy, or hearty. Takes longer to chew. (Oats, protein pasta, brown rice, quinoa).</div>
+      <p><b>Impact:</b> Sustained energy. This is the fuel that keeps you running and sprinting in the 2nd half of a game.</p>
+    </div>
+
+    <div class="ref-card" style="border-color: var(--warn);">
+      <h3>🚀 FAST BURN <span>+1</span></h3>
+      <div class="carb-tell"><b>The Tell:</b> Usually white, fluffy, or soft. Melts in your mouth. (White rice, bagels, potatoes).</div>
+      <p><b>Impact:</b> Immediate energy. Use these as a "top-off" for quick energy right before training or a game.</p>
+    </div>
+
+    <div class="ref-card" style="border-color: var(--water);">
+      <h3>💧 WATER <span>Target: 8</span></h3>
+      <p><b>Impact:</b> Essential for focus and temperature control. Keeps the engine cool and the brain sharp for quick decision-making on the field.</p>
+    </div>
+
+    <div class="ref-card" style="border-color: var(--bad);">
+      <h3>🍭 FUN FUEL <span>-3</span></h3>
+      <p><b>Identify:</b> Factory-made sugar and "Empty" snacks (Candy, soda, junk food).</p>
+      <p><b>Impact:</b> High spike energy that drains quickly. Tells your body to store energy as fat rather than burn it for performance. Fine for fun—just balance it later!</p>
+    </div>
   </section>
 </main>
 
@@ -144,7 +176,6 @@
     const score = calculateFuelScore();
     const h2o = logs.filter(l => l.label === 'Water').length;
 
-    // Intelligent Merge Logic
     let existingIndex = history.findIndex(h => h.date === dayLabel);
     if (existingIndex > -1) {
       if(!confirm(`Update existing stats for ${dayLabel}?`)) return;
@@ -176,7 +207,6 @@
       <div class="chip">${l.label} <button onclick="removeLog(${l.id})">✕</button></div>
     `).join('') || "<small style='color:#aaa'>Nothing logged yet today.</small>";
 
-    // History Charts
     const fuelChart = document.getElementById('chart-fuel');
     const h2oChart = document.getElementById('chart-h2o');
     
