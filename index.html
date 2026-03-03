@@ -42,11 +42,13 @@
     .chip { background: #fff; padding: 4px 10px; border-radius: 999px; font-size: 11px; display: flex; align-items: center; gap: 6px; border: 1px solid #ddd; }
     .chip button { border: none; background: #eee; color: var(--bad); font-weight: bold; border-radius: 50%; width: 16px; height: 16px; cursor: pointer; display:flex; align-items:center; justify-content:center; font-size:10px;}
 
-    .history-card { background: #fff; border-radius: 16px; padding: 15px; border: 1px solid #e6e6e6; margin-top: 20px; }
-    .chart-box { display: flex; flex-direction: column; gap: 15px; margin-top: 10px; }
-    .chart-group { display: flex; align-items: flex-end; gap: 8px; height: 60px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
-    .bar-day { flex: 1; border-radius: 3px 3px 0 0; position: relative; min-height: 2px; transition: height 0.5s; }
-    .bar-day small { position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); font-size: 9px; font-weight: bold; color: #999; }
+    /* History Layout (Separate Sections) */
+    .history-section { margin-top: 20px; }
+    .chart-container { background: #fff; border-radius: 16px; padding: 15px; border: 1px solid #e6e6e6; margin-bottom: 12px; }
+    .chart-title { font-size: 11px; color: var(--purple); font-weight: bold; margin-bottom: 10px; display: block; text-transform: uppercase; }
+    .chart-group { display: flex; align-items: flex-end; gap: 10px; height: 80px; padding-bottom: 25px; border-bottom: 1px solid #eee; }
+    .bar-day { flex: 1; border-radius: 4px 4px 0 0; position: relative; min-height: 2px; transition: height 0.5s; }
+    .bar-day small { position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 9px; font-weight: bold; color: #999; }
 
     .ref-card { background: #fff; border-radius: 12px; padding: 16px; margin-bottom: 12px; border-left: 6px solid #ccc; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
     .ref-card h3 { margin: 0 0 6px; font-size: 16px; color: #333; }
@@ -77,25 +79,29 @@
     </div>
 
     <div class="fuel-list">
-      <button class="fuel-item" onclick="log(3, 'Power')"><div class="points p-power">+3</div><div class="info"><b>POWER</b><span>Protein & Veggies (Repair)</span></div></button>
-      <button class="fuel-item" onclick="log(2, 'Fruit')"><div class="points p-fruit">+2</div><div class="info"><b>FRUIT</b><span>Natural Sugar & Fiber</span></div></button>
-      <button class="fuel-item" onclick="log(2, 'Slow')"><div class="points p-slow">+2</div><div class="info"><b>SLOW BURN</b><span>Steady Athletic Carbs</span></div></button>
-      <button class="fuel-item" onclick="log(1, 'Fast')"><div class="points p-fast">+1</div><div class="info"><b>FAST BURN</b><span>Quick Energy (Nitro)</span></div></button>
-      <button class="fuel-item" onclick="log(-3, 'Fun')"><div class="points p-fun">-3</div><div class="info"><b>FUN FUEL</b><span>Empty Snacks / Spikes</span></div></button>
-      <button class="fuel-item" onclick="log(0, 'Water')"><div class="points p-h2o">💧</div><div class="info"><b>WATER</b><span>8oz Glass (Engine Coolant)</span></div></button>
+      <button class="fuel-item" onclick="log(3, 'Power')"><div class="points p-power">+3</div><div class="info"><b>POWER (+3)</b><span>Protein & Veggies (Repair)</span></div></button>
+      <button class="fuel-item" onclick="log(2, 'Fruit')"><div class="points p-fruit">+2</div><div class="info"><b>FRUIT (+2)</b><span>Natural Sugar & Fiber</span></div></button>
+      <button class="fuel-item" onclick="log(2, 'Slow')"><div class="points p-slow">+2</div><div class="info"><b>SLOW BURN (+2)</b><span>Steady Athletic Carbs</span></div></button>
+      <button class="fuel-item" onclick="log(1, 'Fast')"><div class="points p-fast">+1</div><div class="info"><b>FAST BURN (+1)</b><span>Quick Energy (Nitro)</span></div></button>
+      <button class="fuel-item" onclick="log(-3, 'Fun')"><div class="points p-fun">-3</div><div class="info"><b>FUN FUEL (-3)</b><span>Empty Snacks / Spikes</span></div></button>
+      <button class="fuel-item" onclick="log(0, 'Water')"><div class="points p-h2o">💧</div><div class="info"><b>WATER (8oz)</b><span>Engine Coolant</span></div></button>
     </div>
 
     <div class="chips" id="chips"></div>
 
-    <div class="history-card">
-      <b style="font-size: 11px; color: var(--purple);">7-DAY TRENDS</b>
-      <div class="chart-box">
+    <div class="history-section">
+      <div class="chart-container">
+        <span class="chart-title">7-Day Fuel Grade (Engine)</span>
         <div id="chart-fuel" class="chart-group"></div>
+      </div>
+      
+      <div class="chart-container">
+        <span class="chart-title">7-Day Hydration (Glasses)</span>
         <div id="chart-h2o" class="chart-group"></div>
       </div>
     </div>
 
-    <button style="width:100%; padding:16px; margin-top:15px; border-radius:12px; border:none; background:var(--purple); color:#fff; font-weight:bold; font-size:15px;" onclick="archiveDay()">FINISH DAY & SAVE</button>
+    <button style="width:100%; padding:18px; margin-top:5px; border-radius:14px; border:none; background:var(--purple); color:#fff; font-weight:bold; font-size:16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" onclick="archiveDay()">FINISH DAY & SAVE</button>
   </section>
 
   <section id="ref" class="page">
@@ -103,8 +109,8 @@
     
     <div class="ref-card" style="border-color: var(--good);">
       <h3>⚡ POWER (+3)</h3>
-      <p><b>Identify:</b> Anything that was once an animal (Chicken, steak, salmon, eggs, cottage cheese, Greek yogurt) or grows in the ground and is crunchy (Carrots, cucumbers, peppers, celery).</p>
-      <p><b>Impact:</b> Essential for repairing muscle fibers after heavy training. High-density fuel that keeps your engine stable and helps prevent that "heavy legs" feeling.</p>
+      <p><b>Identify:</b> Anything that was once an animal (Chicken, steak, eggs, cottage cheese, Greek yogurt) or grows in the ground and is crunchy (Carrots, cucumbers, peppers, celery).</p>
+      <p><b>Impact:</b> Essential for repairing muscle fibers after heavy training. High-density fuel that keeps your engine stable and prevents "heavy legs."</p>
     </div>
 
     <div class="ref-card" style="border-color: #43a047;">
@@ -129,7 +135,6 @@
 
     <div class="ref-card" style="border-color: var(--water);">
       <h3>💧 WATER (Target: 8)</h3>
-      <p><b>Identify:</b> 8oz glass of plain water.</p>
       <p><b>Impact:</b> Essential for focus and temperature control. Keeps the brain sharp for making quick split-second decisions on the field.</p>
     </div>
 
@@ -218,7 +223,9 @@
     `).join('') || "<small style='color:#999'>Fuel stats will appear here</small>";
 
     h2oChart.innerHTML = history.map(h => `
-      <div class="bar-day" style="height:${Math.min(100, (h.water / 8) * 100)}%; background:var(--water)"></div>
+      <div class="bar-day" style="height:${Math.min(100, (h.water / 8) * 100)}%; background:var(--water)">
+        <small>${h.date}</small>
+      </div>
     `).join('') || "<small style='color:#999'>Water stats will appear here</small>";
   }
 
