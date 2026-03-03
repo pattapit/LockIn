@@ -7,7 +7,7 @@
   <style>
     :root {
       --purple: #4B2E83; --gold: #B7A57A;
-      --good: #2e7d32; --warn: #fbc02d; --bad: #b00020;
+      --good: #2e7d32; --warn: #fbc02d; --bad: #b00020; --water: #00acc1;
       --bg: #f4f7f6;
     }
     body { font-family: -apple-system, sans-serif; background: var(--bg); margin: 0; padding: 0; }
@@ -16,127 +16,95 @@
     nav button { flex: 1; padding: 15px; border: none; background: none; font-weight: bold; color: #666; cursor: pointer; }
     nav button.active { color: var(--purple); border-bottom: 3px solid var(--purple); }
 
-    .page { display: none; padding: 16px; animation: fadeIn 0.3s; }
+    .page { display: none; padding: 16px; animation: fadeIn 0.2s; }
     .page.active { display: block; }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
     .score-card { background: #fff; border-radius: 16px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: center; margin-bottom: 15px; border: 1px solid #e6e6e6; }
-    .progress-container { background: #eee; border-radius: 999px; height: 32px; margin: 12px 0; overflow: hidden; position: relative; }
-    #bar { height: 100%; transition: width 0.5s ease; width: 0%; }
-    .goal-line { position: absolute; left: 80%; top: 0; bottom: 0; width: 2px; background: rgba(0,0,0,0.3); z-index: 2; }
+    
+    /* Progress Bars */
+    .prog-label { font-size: 10px; font-weight: bold; text-align: left; margin-bottom: 4px; color: #666; display: flex; justify-content: space-between;}
+    .progress-container { background: #eee; border-radius: 999px; height: 24px; margin-bottom: 12px; overflow: hidden; position: relative; border: 1px solid #ddd; }
+    .bar { height: 100%; transition: width 0.6s ease; width: 0%; }
+    .goal-line { position: absolute; left: 80%; top: 0; bottom: 0; width: 2px; background: rgba(0,0,0,0.2); z-index: 2; }
 
-    /* Button Layout */
-    .fuel-list { display: flex; flex-direction: column; gap: 10px; }
+    .fuel-list { display: flex; flex-direction: column; gap: 8px; }
     .fuel-item { display: flex; align-items: center; background: #fff; border: 1px solid #ddd; border-radius: 12px; overflow: hidden; cursor: pointer; text-align: left; padding: 0; width: 100%; }
-    .points { width: 60px; height: 70px; display: flex; align-items: center; justify-content: center; font-weight: 900; color: #fff; font-size: 18px; }
+    .points { width: 60px; height: 65px; display: flex; align-items: center; justify-content: center; font-weight: 900; color: #fff; font-size: 18px; }
     .info { padding: 10px; flex: 1; }
     .info b { display: block; font-size: 15px; color: #333; }
-    .info span { font-size: 11px; color: #777; }
+    .info span { font-size: 10px; color: #777; line-height: 1.1; display: block; }
 
-    .p-power { background: var(--good); }
-    .p-fruit { background: #43a047; }
-    .p-slow { background: #1565c0; }
-    .p-fast { background: var(--warn); color: #333 !important; }
-    .p-fun { background: var(--bad); }
+    .p-power { background: var(--good); } .p-fruit { background: #43a047; }
+    .p-slow { background: #1565c0; } .p-fast { background: var(--warn); color: #333 !important; }
+    .p-fun { background: var(--bad); } .p-h2o { background: var(--water); }
 
-    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; min-height: 30px; }
-    .chip { background: #eee; padding: 5px 10px; border-radius: 999px; font-size: 11px; display: flex; align-items: center; gap: 5px; border: 1px solid #ccc; }
-    .chip button { border: none; background: none; color: var(--bad); font-weight: bold; cursor: pointer; }
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 15px 0; min-height: 35px; }
+    .chip { background: #fff; padding: 4px 10px; border-radius: 999px; font-size: 11px; display: flex; align-items: center; gap: 6px; border: 1px solid #ddd; }
+    .chip button { border: none; background: #eee; color: var(--bad); font-weight: bold; border-radius: 50%; width: 16px; height: 16px; cursor: pointer; display:flex; align-items:center; justify-content:center; font-size:10px;}
 
-    /* Performance History */
-    .chart { display: flex; align-items: flex-end; gap: 8px; height: 100px; margin-top: 20px; padding-bottom: 25px; border-bottom: 1px solid #eee; }
-    .bar-day { flex: 1; background: #ddd; border-radius: 4px 4px 0 0; position: relative; min-height: 5px; }
-    .bar-day span { position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%); font-size: 9px; font-weight: bold; }
+    /* History Charts */
+    .history-card { background: #fff; border-radius: 16px; padding: 15px; border: 1px solid #e6e6e6; margin-top: 20px; }
+    .chart-box { display: flex; flex-direction: column; gap: 15px; margin-top: 10px; }
+    .chart-group { display: flex; align-items: flex-end; gap: 8px; height: 60px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+    .bar-day { flex: 1; border-radius: 3px 3px 0 0; position: relative; min-height: 2px; transition: height 0.5s; }
+    .bar-day small { position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); font-size: 9px; font-weight: bold; color: #999; }
 
-    .ref-card { background: #fff; border-radius: 12px; padding: 15px; margin-bottom: 15px; border-left: 6px solid #ccc; }
-    .ref-card h3 { margin: 0 0 5px; font-size: 16px; }
-    .ref-card p { margin: 5px 0; font-size: 13px; color: #555; line-height: 1.4; }
+    .ref-card { background: #fff; border-radius: 12px; padding: 14px; margin-bottom: 10px; border-left: 5px solid #ccc; font-size: 13px; }
+    .ref-card h3 { margin: 0 0 4px; font-size: 15px; }
   </style>
 </head>
 <body>
 
 <nav>
-  <button id="btn-main" class="active" onclick="showPage('main')">FUEL TRACKER</button>
-  <button id="btn-ref" onclick="showPage('ref')">FUEL GUIDE</button>
+  <button id="btn-main" class="active" onclick="showPage('main')">DASHBOARD</button>
+  <button id="btn-ref" onclick="showPage('ref')">PLAYBOOK</button>
 </nav>
 
 <main>
   <section id="main" class="page active">
     <div class="score-card">
-      <div id="status-msg" style="font-weight: 900; font-size: 16px;">FUELING FOR THE FIELD</div>
+      <div class="prog-label">ENGINE GRADE <span id="val-pct">0%</span></div>
       <div class="progress-container">
         <div class="goal-line"></div>
-        <div id="bar"></div>
+        <div id="fuel-bar" class="bar"></div>
       </div>
-      <div style="font-size: 24px; font-weight: 900; color: var(--purple);" id="current-pct">0%</div>
-      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #999;">Performance Grade</div>
+      
+      <div class="prog-label">HYDRATION (Target: 8) <span id="val-h2o">0/8</span></div>
+      <div class="progress-container">
+        <div id="h2o-bar" class="bar" style="background: var(--water)"></div>
+      </div>
     </div>
 
     <div class="fuel-list">
-      <button class="fuel-item" onclick="log(3, 'Power')">
-        <div class="points p-power">+3</div>
-        <div class="info"><b>POWER</b><span>Protein & Veggies (Recovery & Strength)</span></div>
-      </button>
-      <button class="fuel-item" onclick="log(2, 'Fruit')">
-        <div class="points p-fruit">+2</div>
-        <div class="info"><b>FRUIT</b><span>Natural energy (Berries, Mango, Grapes)</span></div>
-      </button>
-      <button class="fuel-item" onclick="log(2, 'Slow')">
-        <div class="points p-slow">+2</div>
-        <div class="info"><b>SLOW BURN</b><span>Athletic Carbs (Endurance / Battery)</span></div>
-      </button>
-      <button class="fuel-item" onclick="log(1, 'Fast')">
-        <div class="points p-fast">+1</div>
-        <div class="info"><b>FAST BURN</b><span>Quick energy (White rice, pasta)</span></div>
-      </button>
-      <button class="fuel-item" onclick="log(-3, 'Fun')">
-        <div class="points p-fun">-3</div>
-        <div class="info"><b>FUN FUEL</b><span>Sugar / Junk Food</span></div>
-      </button>
+      <button class="fuel-item" onclick="log(3, 'Power')"><div class="points p-power">+3</div><div class="info"><b>POWER</b><span>Protein & Veggies (Repair)</span></div></button>
+      <button class="fuel-item" onclick="log(2, 'Fruit')"><div class="points p-fruit">+2</div><div class="info"><b>FRUIT</b><span>Natural Sugar & Fiber</span></div></button>
+      <button class="fuel-item" onclick="log(2, 'Slow')"><div class="points p-slow">+2</div><div class="info"><b>SLOW BURN</b><span>Steady Athletic Carbs</span></div></button>
+      <button class="fuel-item" onclick="log(1, 'Fast')"><div class="points p-fast">+1</div><div class="info"><b>FAST BURN</b><span>Quick Energy (Nitro)</span></div></button>
+      <button class="fuel-item" onclick="log(-3, 'Fun')"><div class="points p-fun">-3</div><div class="info"><b>FUN FUEL</b><span>Sugar / Junk / Spikes</span></div></button>
+      <button class="fuel-item" onclick="log(0, 'Water')"><div class="points p-h2o">💧</div><div class="info"><b>WATER</b><span>8oz Glass (Engine Coolant)</span></div></button>
     </div>
 
     <div class="chips" id="chips"></div>
 
-    <div class="score-card" style="margin-top:20px; padding: 12px;">
-      <b style="font-size: 12px; color: var(--purple);">7-Day Performance Trend</b>
-      <div class="chart" id="chart"></div>
+    <div class="history-card">
+      <b style="font-size: 11px; color: var(--purple);">7-DAY TRENDS</b>
+      <div class="chart-box">
+        <div id="chart-fuel" class="chart-group"></div>
+        <div id="chart-h2o" class="chart-group"></div>
+      </div>
     </div>
 
-    <button style="width:100%; padding:15px; margin-top:10px; border-radius:12px; border:none; background:var(--purple); color:#fff; font-weight:bold;" onclick="archiveDay()">FINISH DAY & SAVE</button>
+    <button style="width:100%; padding:16px; margin-top:15px; border-radius:12px; border:none; background:var(--purple); color:#fff; font-weight:bold; font-size:15px;" onclick="archiveDay()">FINISH DAY & SAVE</button>
   </section>
 
   <section id="ref" class="page">
-    <h2 style="color: var(--purple);">The Athlete's Playbook</h2>
-    
-    <div class="ref-card" style="border-color: var(--good);">
-      <h3>⚡ POWER (+3)</h3>
-      <p><b>What:</b> Chicken, Steak, Eggs, Carrots, Cukes, Peppers.</p>
-      <p><b>Why:</b> Essential for repairing muscle fibers after training. High-density fuel that keeps your engine stable.</p>
-    </div>
-
-    <div class="ref-card" style="border-color: #43a047;">
-      <h3>🍎 FRUIT (+2)</h3>
-      <p><b>What:</b> Berries, bananas, apples, mango.</p>
-      <p><b>Why:</b> Nature's energy source. Provides quick fuel for the brain and muscles without the sugar crash.</p>
-    </div>
-
-    <div class="ref-card" style="border-color: #1565c0;">
-      <h3>🐢 SLOW BURN (+2)</h3>
-      <p><b>What:</b> Oats, Protein Pasta, Brown Rice, Quinoa.</p>
-      <p><b>Why:</b> Sustained energy. This is the fuel that keeps you running in the 2nd half of a game.</p>
-    </div>
-
-    <div class="ref-card" style="border-color: var(--warn);">
-      <h3>🚀 FAST BURN (+1)</h3>
-      <p><b>What:</b> White Rice, Plain Pasta, Bagels, Potatoes.</p>
-      <p><b>Why:</b> Immediate energy. Use these as a "top-off" before training or a game.</p>
-    </div>
-
-    <div class="ref-card" style="border-color: var(--bad);">
-      <h3>🍭 FUN FUEL (-3)</h3>
-      <p><b>What:</b> Candy, Soda, Junk Food.</p>
-      <p><b>Why:</b> High spike energy that drains quickly. Fine for fun, but doesn't contribute to athletic recovery.</p>
-    </div>
+    <h2 style="color: var(--purple); margin-top:0;">The Reference Guide</h2>
+    <div class="ref-card" style="border-color: var(--good);"><h3>⚡ POWER (+3)</h3><p>Chicken, eggs, carrots. Repairs muscle fibers after soccer.</p></div>
+    <div class="ref-card" style="border-color: #1565c0;"><h3>🐢 SLOW BURN (+2)</h3><p>Oats, protein pasta. Steady energy for the 2nd half.</p></div>
+    <div class="ref-card" style="border-color: var(--warn);"><h3>🚀 FAST BURN (+1)</h3><p>White rice, bagels. Quick energy for right before a game.</p></div>
+    <div class="ref-card" style="border-color: var(--water);"><h3>💧 WATER (Target: 8)</h3><p>Keeps the engine cool and the brain sharp for decision-making.</p></div>
+    <div class="ref-card" style="border-color: var(--bad);"><h3>🍭 FUN FUEL (-3)</h3><p>Candy, soda. High spike energy that drains quickly.</p></div>
   </section>
 </main>
 
@@ -149,6 +117,7 @@
     document.querySelectorAll('nav button').forEach(el => el.classList.remove('active'));
     document.getElementById(p).classList.add('active');
     document.getElementById('btn-' + p).classList.add('active');
+    window.scrollTo(0,0);
   }
 
   function log(val, label) {
@@ -161,20 +130,30 @@
     update();
   }
 
-  function calculateScore() {
-    const activeLogs = logs.filter(l => l.val !== 0);
-    if (activeLogs.length === 0) return 0;
-    let total = activeLogs.reduce((acc, curr) => acc + curr.val, 0);
-    let possible = activeLogs.reduce((acc, curr) => acc + (curr.val > 0 ? curr.val : 0), 0);
-    if (possible <= 0) return 0;
-    let final = Math.round((total / possible) * 100);
-    return Math.max(0, Math.min(100, final));
+  function calculateFuelScore() {
+    const fuelLogs = logs.filter(l => l.label !== 'Water');
+    if (fuelLogs.length === 0) return 0;
+    let total = fuelLogs.reduce((a, c) => a + c.val, 0);
+    let possible = fuelLogs.reduce((a, c) => a + (c.val > 0 ? c.val : 0), 0);
+    return possible <= 0 ? 0 : Math.max(0, Math.min(100, Math.round((total / possible) * 100)));
   }
 
   function archiveDay() {
     if (logs.length === 0) return;
-    if (!confirm("Save today's stats?")) return;
-    history.push({ date: new Date().toLocaleDateString('en-US', {weekday: 'short'}), pct: calculateScore() });
+    const dayLabel = new Date().toLocaleDateString('en-US', {weekday: 'short'});
+    const score = calculateFuelScore();
+    const h2o = logs.filter(l => l.label === 'Water').length;
+
+    // Intelligent Merge Logic
+    let existingIndex = history.findIndex(h => h.date === dayLabel);
+    if (existingIndex > -1) {
+      if(!confirm(`Update existing stats for ${dayLabel}?`)) return;
+      history[existingIndex] = { date: dayLabel, pct: score, water: h2o };
+    } else {
+      if(!confirm(`Finish day and save to ${dayLabel}?`)) return;
+      history.push({ date: dayLabel, pct: score, water: h2o });
+    }
+
     if (history.length > 7) history.shift();
     localStorage.setItem('af_history', JSON.stringify(history));
     logs = [];
@@ -183,22 +162,33 @@
 
   function update() {
     localStorage.setItem('af_logs', JSON.stringify(logs));
-    const score = calculateScore();
-    document.getElementById('current-pct').innerText = score + '%';
-    const bar = document.getElementById('bar');
-    bar.style.width = score + '%';
-    bar.style.backgroundColor = score >= 80 ? 'var(--good)' : (score >= 50 ? 'var(--warn)' : 'var(--bad)');
+    const score = calculateFuelScore();
+    const h2oCount = logs.filter(l => l.label === 'Water').length;
+
+    document.getElementById('val-pct').innerText = score + '%';
+    document.getElementById('fuel-bar').style.width = score + '%';
+    document.getElementById('fuel-bar').style.backgroundColor = score >= 80 ? 'var(--good)' : (score >= 50 ? 'var(--warn)' : 'var(--bad)');
+
+    document.getElementById('val-h2o').innerText = h2oCount + '/8';
+    document.getElementById('h2o-bar').style.width = Math.min(100, (h2oCount / 8) * 100) + '%';
 
     document.getElementById('chips').innerHTML = logs.map(l => `
       <div class="chip">${l.label} <button onclick="removeLog(${l.id})">✕</button></div>
-    `).join('');
+    `).join('') || "<small style='color:#aaa'>Nothing logged yet today.</small>";
 
-    const chart = document.getElementById('chart');
-    chart.innerHTML = history.map(h => `
-      <div class="bar-day" style="height: ${h.pct}% !important; background: ${h.pct >= 80 ? 'var(--good)' : 'var(--warn)'}">
-        <span>${h.date}</span>
+    // History Charts
+    const fuelChart = document.getElementById('chart-fuel');
+    const h2oChart = document.getElementById('chart-h2o');
+    
+    fuelChart.innerHTML = history.map(h => `
+      <div class="bar-day" style="height:${h.pct}%; background:${h.pct >= 80 ? 'var(--good)' : 'var(--warn)'}">
+        <small>${h.date}</small>
       </div>
-    `).join('') || "<div style='font-size:10px; color:#999;'>Finish a day to see progress</div>";
+    `).join('') || "<small style='color:#999'>Fuel stats will appear here</small>";
+
+    h2oChart.innerHTML = history.map(h => `
+      <div class="bar-day" style="height:${Math.min(100, (h.water / 8) * 100)}%; background:var(--water)"></div>
+    `).join('') || "<small style='color:#999'>Water stats will appear here</small>";
   }
 
   update();
