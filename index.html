@@ -38,7 +38,7 @@
 
     .history-card { background: #fff; border-radius: 16px; padding: 15px; border: 1px solid #e6e6e6; margin-top: 20px; }
     .day-row { margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #f0f0f0; }
-    .day-label { font-size: 13px; font-weight: 900; color: var(--purple); margin-bottom: 8px; display: flex; justify-content: space-between; }
+    .day-label { font-size: 13px; font-weight: 900; color: var(--purple); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
     .stacked-bar { display: flex; height: 24px; background: #eee; border-radius: 6px; overflow: hidden; border: 1px solid #ddd; margin-bottom: 4px; }
     .segment { height: 100%; }
     
@@ -89,37 +89,37 @@
     
     <div class="ref-card" style="border-color: var(--good);">
       <h3>⚡ POWER (+3)</h3>
-      <p><b>Identify:</b> Anything that was once an animal (Chicken, steak, eggs, fish, Greek yogurt) or grows in the ground and is crunchy (Carrots, cucumbers, peppers).</p>
-      <p><b>Impact:</b> Essential for repairing muscle fibers after heavy training. High-density fuel that keeps your engine stable and prevents "heavy legs."</p>
+      <p><b>What:</b> Chicken, Steak, Eggs, Carrots, Cukes, Peppers.</p>
+      <p><b>Why:</b> Essential for repairing muscle fibers after training. High-density fuel that keeps your engine stable.</p>
     </div>
 
     <div class="ref-card" style="border-color: #43a047;">
       <h3>🍎 FRUIT (+2)</h3>
-      <p><b>Identify:</b> Anything naturally sweet from a tree or vine (Berries, bananas, apples, mango).</p>
-      <p><b>Impact:</b> Nature's energy source. Provides quick fuel for the brain and muscles without the sugar crash.</p>
+      <p><b>What:</b> Berries, bananas, apples, mango.</p>
+      <p><b>Why:</b> Nature's energy source. Provides quick fuel for the brain and muscles without the sugar crash.</p>
     </div>
 
     <div class="ref-card" style="border-color: #1565c0;">
       <h3>🐢 SLOW BURN (+2)</h3>
-      <div class="carb-tell"><b>The Tell:</b> Usually brown, grainy, or hearty. Takes longer to chew. (Oats, protein pasta, brown rice, quinoa).</div>
-      <p><b>Impact:</b> Sustained energy. This is the fuel that keeps you running and sprinting in the 2nd half of a game.</p>
+      <p><b>What:</b> Oats, Protein Pasta, Brown Rice, Quinoa.</p>
+      <p><b>Why:</b> Sustained energy. This is the fuel that keeps you running in the 2nd half of a game.</p>
     </div>
 
     <div class="ref-card" style="border-color: var(--warn);">
       <h3>🚀 FAST BURN (+1)</h3>
-      <div class="carb-tell"><b>The Tell:</b> Usually white, fluffy, or soft. Melts in your mouth and digests fast. (White rice, bagels, potatoes).</div>
-      <p><b>Impact:</b> Immediate energy. Use these as a "top-off" for quick energy right before training or a game.</p>
+      <p><b>What:</b> White Rice, Plain Pasta, Bagels, Potatoes.</p>
+      <p><b>Why:</b> Immediate energy. Use these as a "top-off" before training or a game.</p>
     </div>
 
     <div class="ref-card" style="border-color: var(--water);">
       <h3>💧 WATER (Target: 8)</h3>
-      <p><b>Impact:</b> Essential for focus and temperature control. Keeps the engine cool and the brain sharp for quick split-second decisions on the field.</p>
+      <p><b>Why:</b> Keeps the engine cool and the brain sharp for decision-making.</p>
     </div>
 
     <div class="ref-card" style="border-color: var(--bad);">
       <h3>🍭 FUN FUEL (-3)</h3>
-      <p><b>Identify:</b> Factory-made sugar and "Empty Snacks" (Candy, soda, junk food).</p>
-      <p><b>Impact:</b> High spike energy that drains quickly. Tells your body to store energy as fat rather than burn it for performance. Fine for fun—just balance it later!</p>
+      <p><b>What:</b> Candy, Soda, Junk Food.</p>
+      <p><b>Why:</b> High spike energy that drains quickly. Fine for fun, but doesn't contribute to athletic recovery.</p>
     </div>
 
     <button style="margin-top:30px; opacity:0.3; font-size:10px; width:100%;" onclick="localStorage.clear(); location.reload();">Reset Everything (Start Fresh)</button>
@@ -158,21 +158,24 @@
   function archiveDay() {
     if (logs.length === 0) return;
     const dayLabel = new Date().toLocaleDateString('en-US', {weekday: 'short'});
-    const score = calculateEngineGrade();
-    const fuelOnly = logs.filter(l => l.label !== 'Water');
-    const totalItems = fuelOnly.length || 1;
     
+    // MATHEMATICAL ISOLATION: Filter out Water before calculating composition
+    const fuelOnly = logs.filter(l => l.label !== 'Water');
+    const totalFuelItems = fuelOnly.length || 1;
+    
+    const composition = {
+      Power: Math.round((fuelOnly.filter(l => l.label === 'Power').length / totalFuelItems) * 100) || 0,
+      Fruit: Math.round((fuelOnly.filter(l => l.label === 'Fruit').length / totalFuelItems) * 100) || 0,
+      Slow: Math.round((fuelOnly.filter(l => l.label === 'Slow').length / totalFuelItems) * 100) || 0,
+      Fast: Math.round((fuelOnly.filter(l => l.label === 'Fast').length / totalFuelItems) * 100) || 0,
+      Fun: Math.round((fuelOnly.filter(l => l.label === 'Fun').length / totalFuelItems) * 100) || 0
+    };
+
     const entry = {
       date: dayLabel,
-      score: score,
+      score: calculateEngineGrade(),
       water: logs.filter(l => l.label === 'Water').length,
-      comp: {
-        Power: Math.round((fuelOnly.filter(l => l.label === 'Power').length / totalItems) * 100) || 0,
-        Fruit: Math.round((fuelOnly.filter(l => l.label === 'Fruit').length / totalItems) * 100) || 0,
-        Slow: Math.round((fuelOnly.filter(l => l.label === 'Slow').length / totalItems) * 100) || 0,
-        Fast: Math.round((fuelOnly.filter(l => l.label === 'Fast').length / totalItems) * 100) || 0,
-        Fun: Math.round((fuelOnly.filter(l => l.label === 'Fun').length / totalItems) * 100) || 0
-      }
+      comp: composition
     };
 
     let idx = history.findIndex(h => h.date === dayLabel);
@@ -208,7 +211,10 @@
 
     document.getElementById('history-list').innerHTML = history.map(h => `
       <div class="day-row">
-        <div class="day-label"><span>${h.date}: ${h.score}% Fuel Grade</span><span style="color:var(--water)">💧 ${h.water} Glasses</span></div>
+        <div class="day-label">
+          <span>${h.date}: ${h.score}% Fuel Grade</span>
+          <span style="color:var(--water); font-size: 11px;">💧 ${h.water} Glasses</span>
+        </div>
         <div class="stacked-bar">
           <div class="segment p-power" style="width:${h.comp.Power}%"></div>
           <div class="segment p-fruit" style="width:${h.comp.Fruit}%"></div>
@@ -217,7 +223,7 @@
           <div class="segment p-fun" style="width:${h.comp.Fun}%"></div>
         </div>
         <div style="font-size:9px; color:#666; display:flex; justify-content:space-between;">
-          <span>Power ${h.comp.Power}%</span><span>Fruit ${h.comp.Fruit}%</span><span>Slow ${h.comp.Slow}%</span><span>Fun ${h.comp.Fun}%</span>
+          <span>Pwr ${h.comp.Power}%</span><span>Fr ${h.comp.Fruit}%</span><span>Sl ${h.comp.Slow}%</span><span>Fs ${h.comp.Fast}%</span><span>Fun ${h.comp.Fun}%</span>
         </div>
       </div>
     `).join('') || "No logs saved yet.";
