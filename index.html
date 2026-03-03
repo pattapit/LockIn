@@ -38,12 +38,13 @@
 
     .history-card { background: #fff; border-radius: 16px; padding: 15px; border: 1px solid #e6e6e6; margin-top: 20px; }
     .day-row { margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #f0f0f0; }
-    .day-label { font-size: 13px; font-weight: 900; color: var(--purple); margin-bottom: 8px; display: flex; justify-content: space-between; }
+    .day-label { font-size: 12px; font-weight: 900; color: var(--purple); margin-bottom: 8px; display: flex; justify-content: space-between; }
     .stacked-bar { display: flex; height: 24px; background: #eee; border-radius: 6px; overflow: hidden; border: 1px solid #ddd; margin-bottom: 4px; }
     .segment { height: 100%; }
     
-    .ref-card { background: #fff; border-radius: 12px; padding: 16px; margin-bottom: 12px; border-left: 6px solid #ccc; }
-    .ref-card h3 { margin: 0 0 6px; font-size: 16px; }
+    .ref-card { background: #fff; border-radius: 12px; padding: 16px; margin-bottom: 12px; border-left: 6px solid #ccc; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+    .ref-card h3 { margin: 0 0 6px; font-size: 16px; color: #333; }
+    .ref-card p { margin: 4px 0; font-size: 13px; color: #444; line-height: 1.4; }
   </style>
 </head>
 <body>
@@ -64,15 +65,15 @@
     </div>
 
     <div class="fuel-list">
-      <button class="fuel-item" onclick="log(3, 'Power')"><div class="points p-power">+3</div><div class="info"><b>POWER (+3)</b><span>Protein & Veggies</span></div></button>
-      <button class="fuel-item" onclick="log(2, 'Fruit')"><div class="points p-fruit">+2</div><div class="info"><b>FRUIT (+2)</b><span>Nature's Sugar</span></div></button>
-      <button class="fuel-item" onclick="log(2, 'Slow')"><div class="points p-slow">+2</div><div class="info"><b>SLOW BURN (+2)</b><span>Steady Energy</span></div></button>
-      <button class="fuel-item" onclick="log(1, 'Fast')"><div class="points p-fast">+1</div><div class="info"><b>FAST BURN (+1)</b><span>Quick Energy</span></div></button>
-      <button class="fuel-item" onclick="log(-3, 'Fun')"><div class="points p-fun">-3</div><div class="info"><b>FUN FUEL (-3)</b><span>Empty Snacks</span></div></button>
+      <button class="fuel-item" onclick="log(3, 'Power')"><div class="points p-power">+3</div><div class="info"><b>POWER (+3)</b><span>Protein & Veggies (Repair)</span></div></button>
+      <button class="fuel-item" onclick="log(2, 'Fruit')"><div class="points p-fruit">+2</div><div class="info"><b>FRUIT (+2)</b><span>Natural Sugar & Fiber</span></div></button>
+      <button class="fuel-item" onclick="log(2, 'Slow')"><div class="points p-slow">+2</div><div class="info"><b>SLOW BURN (+2)</b><span>Steady Athletic Carbs</span></div></button>
+      <button class="fuel-item" onclick="log(1, 'Fast')"><div class="points p-fast">+1</div><div class="info"><b>FAST BURN (+1)</b><span>Quick Energy (Nitro)</span></div></button>
+      <button class="fuel-item" onclick="log(-3, 'Fun')"><div class="points p-fun">-3</div><div class="info"><b>FUN FUEL (-3)</b><span>Empty Snacks / Spikes</span></div></button>
       <button class="fuel-item" onclick="log(0, 'Water')"><div class="points p-h2o">💧</div><div class="info"><b>WATER</b><span>8oz Glass</span></div></button>
     </div>
 
-    <div id="chips" style="display:flex; flex-wrap:wrap; gap:5px; margin:10px 0;"></div>
+    <div id="chips" style="display:flex; flex-wrap:wrap; gap:5px; margin:15px 0;"></div>
 
     <div class="history-card">
       <b style="font-size: 11px; color: var(--purple);">DAILY PERFORMANCE LOG</b>
@@ -83,11 +84,44 @@
   </section>
 
   <section id="ref" class="page">
-    <div class="ref-card" style="border-color: var(--good);"><h3>⚡ POWER (+3)</h3><p><b>What:</b> Chicken, Steak, Eggs, Carrots, Cukes, Peppers.</p><p><b>Why:</b> Essential for repairing muscle fibers after training.</p></div>
-    <div class="ref-card" style="border-color: #1565c0;"><h3>🐢 SLOW BURN (+2)</h3><p><b>What:</b> Oats, Protein Pasta, Brown Rice, Quinoa.</p><p><b>Why:</b> Sustained energy for the 2nd half of a game.</p></div>
-    <div class="ref-card" style="border-color: var(--water);"><h3>💧 WATER (Target: 8)</h3><p><b>Why:</b> Keeps the brain sharp for quick decision-making.</p></div>
-    <div class="ref-card" style="border-color: var(--bad);"><h3>🍭 FUN FUEL (-3)</h3><p><b>What:</b> Candy, Soda, Junk Food.</p><p><b>Why:</b> High spike energy that drains quickly.</p></div>
-    <button style="margin-top:20px; opacity:0.3; font-size:10px; width:100%;" onclick="localStorage.clear(); location.reload();">Emergency Data Reset</button>
+    <h2 style="color: var(--purple); margin-top: 0;">The Athlete's Playbook</h2>
+    
+    <div class="ref-card" style="border-color: var(--good);">
+      <h3>⚡ POWER (+3)</h3>
+      <p><b>What:</b> Chicken, Steak, Eggs, Carrots, Cukes, Peppers.</p>
+      <p><b>Why:</b> Essential for repairing muscle fibers after training. High-density fuel that keeps your engine stable.</p>
+    </div>
+
+    <div class="ref-card" style="border-color: #43a047;">
+      <h3>🍎 FRUIT (+2)</h3>
+      <p><b>What:</b> Berries, bananas, apples, mango.</p>
+      <p><b>Why:</b> Nature's energy source. Provides quick fuel for the brain and muscles without the sugar crash.</p>
+    </div>
+
+    <div class="ref-card" style="border-color: #1565c0;">
+      <h3>🐢 SLOW BURN (+2)</h3>
+      <p><b>What:</b> Oats, Protein Pasta, Brown Rice, Quinoa.</p>
+      <p><b>Why:</b> Sustained energy. This is the fuel that keeps you running in the 2nd half of a game.</p>
+    </div>
+
+    <div class="ref-card" style="border-color: var(--warn);">
+      <h3>🚀 FAST BURN (+1)</h3>
+      <p><b>What:</b> White Rice, Plain Pasta, Bagels, Potatoes.</p>
+      <p><b>Why:</b> Immediate energy. Use these as a "top-off" before training or a game.</p>
+    </div>
+
+    <div class="ref-card" style="border-color: var(--water);">
+      <h3>💧 WATER (Target: 8)</h3>
+      <p><b>Why:</b> Keeps the engine cool and the brain sharp for decision-making.</p>
+    </div>
+
+    <div class="ref-card" style="border-color: var(--bad);">
+      <h3>🍭 FUN FUEL (-3)</h3>
+      <p><b>What:</b> Candy, Soda, Junk Food.</p>
+      <p><b>Why:</b> High spike energy that drains quickly. Fine for fun, but doesn't contribute to athletic recovery.</p>
+    </div>
+
+    <button style="margin-top:30px; background:none; border:1px solid #ddd; color:#ccc; padding:8px; border-radius:8px; font-size:10px; width:100%;" onclick="localStorage.clear(); location.reload();">Reset Everything (Start Fresh)</button>
   </section>
 </main>
 
@@ -104,6 +138,11 @@
 
   function log(val, label) {
     logs.push({ val, label, id: Date.now() });
+    update();
+  }
+
+  function removeLog(id) {
+    logs = logs.filter(l => l.id !== id);
     update();
   }
 
@@ -136,10 +175,8 @@
 
     let idx = history.findIndex(h => h.date === dayLabel);
     if (idx > -1) {
-      // Merge logic: Add new logs to existing history for today
-      history[idx].score = entry.score;
-      history[idx].water = entry.water;
-      history[idx].comp = entry.comp;
+      if(!confirm(`Update existing stats for ${dayLabel}?`)) return;
+      history[idx] = entry;
     } else {
       history.push(entry);
     }
@@ -160,6 +197,12 @@
     document.getElementById('fuel-bar').style.backgroundColor = score >= 80 ? 'var(--good)' : (score >= 50 ? 'var(--warn)' : 'var(--bad)');
     document.getElementById('val-h2o').innerText = h2o + '/8';
     document.getElementById('h2o-bar').style.width = Math.min(100, (h2o/8)*100) + '%';
+
+    document.getElementById('chips').innerHTML = logs.map(l => `
+      <div style="background:#fff; border:1px solid #ddd; padding:4px 10px; border-radius:999px; font-size:11px; display:flex; align-items:center; gap:6px;">
+        ${l.label} <button onclick="removeLog(${l.id})" style="border:none; background:none; color:red; font-weight:bold; cursor:pointer;">✕</button>
+      </div>
+    `).join('') || "<small style='color:#aaa'>Ready to log...</small>";
 
     document.getElementById('history-list').innerHTML = history.map(h => `
       <div class="day-row">
