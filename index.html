@@ -36,19 +36,21 @@
     .p-fun { background: var(--bad); } .p-h2o { background: var(--water); }
 
     .history-card { background: #fff; border-radius: 16px; padding: 15px; border: 1px solid #e6e6e6; margin-top: 20px; }
-    .day-row { margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #f0f0f0; }
+    .day-row { margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid #f0f0f0; }
     .day-label { font-size: 13px; font-weight: 900; color: var(--purple); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
-    .stacked-bar { display: flex; height: 24px; background: #ddd; border-radius: 6px; overflow: hidden; border: 1px solid #ccc; margin-bottom: 4px; }
-    .segment { height: 100%; }
-    
-    .ref-card { background: #fff; border-radius: 12px; padding: 16px; margin-bottom: 12px; border-left: 6px solid #ccc; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-    .ref-card h3 { margin: 0 0 6px; font-size: 16px; color: #333; }
-    .ref-card p { margin: 4px 0; font-size: 13px; color: #444; line-height: 1.4; }
+    .stacked-bar { display: flex; height: 30px; background: #eee; border-radius: 6px; overflow: hidden; border: 1px solid #ddd; margin-bottom: 6px; }
+    .segment { height: 100%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 9px; font-weight: bold; overflow: hidden; white-space: nowrap; }
+    .comp-labels { display: flex; justify-content: space-between; font-size: 9px; color: #777; font-weight: 600; }
 
-    .portion-box { background: #fdfdfd; border: 1px solid #eee; border-radius: 12px; padding: 15px; margin-top: 10px; }
-    .portion-row { margin-bottom: 15px; }
-    .portion-row b { color: var(--purple); font-size: 14px; display: block; margin-bottom: 3px; }
-    .portion-row i { font-size: 12px; color: #555; display: block; line-height: 1.4; }
+    .ref-card { background: #fff; border-radius: 12px; padding: 16px; margin-bottom: 12px; border-left: 6px solid #ccc; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+    .ref-card h3 { margin: 0 0 8px; font-size: 16px; color: #333; }
+    .ref-card p { margin: 6px 0; font-size: 13px; color: #444; line-height: 1.4; }
+    .carb-tell { background: #f9f9f9; padding: 8px; border-radius: 6px; font-size: 12px; border: 1px dashed #ccc; margin: 8px 0; }
+    
+    .portion-box { background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 12px; padding: 15px; margin-top: 20px; }
+    .portion-row { margin-bottom: 12px; }
+    .portion-row b { color: var(--purple); font-size: 13px; display: block; margin-bottom: 2px; }
+    .portion-row i { font-size: 12px; color: #555; display: block; font-style: normal; line-height: 1.4; }
   </style>
 </head>
 <body>
@@ -81,7 +83,7 @@
 
     <div class="history-card">
       <b style="font-size: 11px; color: var(--purple);">DAILY PERFORMANCE LOG</b>
-      <div id="history-list" style="margin-top:10px;"></div>
+      <div id="history-list" style="margin-top:15px;"></div>
     </div>
 
     <button style="width:100%; padding:18px; margin-top:15px; border-radius:12px; border:none; background:var(--purple); color:#fff; font-weight:bold; cursor:pointer;" onclick="archiveDay()">FINISH DAY & SAVE</button>
@@ -89,25 +91,52 @@
 
   <section id="ref" class="page">
     <h2 style="color: var(--purple); margin-top: 0;">The Athlete's Playbook</h2>
-    <div class="ref-card" style="border-color: var(--good);"><h3>⚡ POWER (+3)</h3><p><b>What:</b> Chicken, Steak, Eggs, Peanut Butter, Carrots, Cucumbers, Peppers.</p><p><b>Why:</b> Muscle repair and engine stability.</p></div>
-    <div class="ref-card" style="border-color: #43a047;"><h3>🍎 FRUIT (+2)</h3><p><b>What:</b> Berries, bananas, apples, mango.</p></div>
-    <div class="ref-card" style="border-color: #1565c0;"><h3>🐢 SLOW BURN (+2)</h3><p><b>What:</b> Oats, Protein Pasta, Brown Rice, Quinoa.</p></div>
-    <div class="ref-card" style="border-color: var(--warn);"><h3>🚀 FAST BURN (+1)</h3><p><b>What:</b> White Rice, Plain Pasta, Bagels, Potatoes.</p></div>
-    <div class="ref-card" style="border-color: var(--bad);"><h3>🍭 FUN FUEL (-3)</h3><p><b>What:</b> Candy, Soda, Junk Food.</p></div>
+    
+    <div class="ref-card" style="border-color: var(--good);">
+      <h3>⚡ POWER (+3)</h3>
+      <p><b>Identify:</b> Anything that was once an animal (Chicken, steak, eggs, cottage cheese, Greek yogurt) or grows in the ground and is crunchy (Carrots, cucumbers, peppers, celery).</p>
+      <p><b>Impact:</b> Essential for repairing muscle fibers after heavy training. High-density fuel that keeps your engine stable and prevents "heavy legs."</p>
+    </div>
+
+    <div class="ref-card" style="border-color: #43a047;">
+      <h3>🍎 FRUIT (+2)</h3>
+      <p><b>Identify:</b> Anything naturally sweet from a tree, vine, or bush (Berries, bananas, apples, mango, grapes, applesauce).</p>
+      <p><b>Impact:</b> Nature's energy source. Provides quick fuel for the brain and muscles during long days without a sugar crash.</p>
+    </div>
+
+    <div class="ref-card" style="border-color: #1565c0;">
+      <h3>🐢 SLOW BURN (+2)</h3>
+      <div class="carb-tell"><b>The Tell:</b> Usually brown, grainy, or hearty. Takes longer to chew and feels "heavy."</div>
+      <p><b>Identify:</b> Oats, Protein Pasta (Barilla+), brown rice, quinoa, sweet potatoes, whole-wheat bread.</p>
+      <p><b>Impact:</b> Sustained energy. Like a big battery, this keeps you running and sprinting at full speed in the 2nd half of a game.</p>
+    </div>
+
+    <div class="ref-card" style="border-color: var(--warn);">
+      <h3>🚀 FAST BURN (+1)</h3>
+      <div class="carb-tell"><b>The Tell:</b> Usually white, fluffy, or soft. Melts in your mouth and digests fast.</div>
+      <p><b>Identify:</b> White rice, bagels, plain pasta, uncrustables, white potatoes, pretzels.</p>
+      <p><b>Impact:</b> Immediate energy nitro boost. Great for right before training or at halftime.</p>
+    </div>
+
+    <div class="ref-card" style="border-color: var(--bad);">
+      <h3>🍭 FUN FUEL (-3)</h3>
+      <p><b>Identify:</b> Factory-made sugar and "Empty Snacks" (Candy, soda, donuts, processed chips).</p>
+      <p><b>Impact:</b> High spike energy that drains quickly. Tells your body to store energy as fat rather than burn it for performance. Fine for fun—just balance it later!</p>
+    </div>
 
     <div class="portion-box">
-      <h3 style="margin-top:0; color:var(--purple);">🖐️ Hand Portion Playbook</h3>
-      <div class="portion-row"><b>PROTEIN / MEAT (POWER)</b><i>Open your hand and look at your palm. Think of your hand without fingers—one portion of meat should match the size and thickness of that palm.</i></div>
-      <div class="portion-row"><b>VEGGIES (POWER)</b><i>Close your fist. Everything from your wrist up—that whole ball—makes one full serving of veggies.</i></div>
-      <div class="portion-row"><b>PEANUT BUTTER (POWER)</b><i>One serving is roughly the size of your thumb.</i></div>
-      <div class="portion-row"><b>CARBS (SLOW / FAST BURN)</b><i>One serving is what fits inside one cupped hand. Pull your fingers in toward your palm to make a "bowl"—everything that fits in that bowl is one serving.</i></div>
+      <h3 style="margin-top:0; color:var(--purple); font-size: 16px;">🖐️ Hand Portion Playbook</h3>
+      <div class="portion-row"><b>PROTEIN / MEAT</b><i>Open your hand and look at your palm. Think of your hand without fingers—one portion of meat should match the size and thickness of that palm.</i></div>
+      <div class="portion-row"><b>VEGGIES (CARROTS/PEPPERS)</b><i>Close your fist. Everything from your wrist up—that whole ball—makes one full serving of veggies.</i></div>
+      <div class="portion-row"><b>PEANUT BUTTER</b><i>One serving is roughly the size of your thumb. Two thumbs is a "Gold Medal" serving with fruit!</i></div>
+      <div class="portion-row"><b>CARBS (RICE/PASTA)</b><i>One serving is what fits inside one cupped hand. Pull your fingers in to make a "bowl"—everything that fits in that bowl is one serving.</i></div>
     </div>
-    <button style="margin-top:30px; opacity:0.3; font-size:10px; width:100%; border:none; background:transparent; cursor:pointer;" onclick="localStorage.clear(); location.reload();">Reset All Data</button>
+
+    <button style="margin-top:30px; opacity:0.3; font-size:10px; width:100%; border:none; background:transparent; cursor:pointer;" onclick="if(confirm('Wipe everything?')) {localStorage.clear(); location.reload();}">Reset Everything (Start Fresh)</button>
   </section>
 </main>
 
 <script>
-  // Initial Load
   let logs = JSON.parse(localStorage.getItem('af_logs') || '[]');
   let history = JSON.parse(localStorage.getItem('af_history') || '[]');
 
@@ -129,16 +158,16 @@
   }
 
   function calculateScore(items) {
-    if (items.length === 0) return 0;
-    let total = items.reduce((a, c) => a + c.val, 0);
-    let possible = items.reduce((a, c) => a + (c.val > 0 ? c.val : 0), 0);
+    const fuel = items.filter(i => i.label !== 'Water');
+    if (fuel.length === 0) return 0;
+    let total = fuel.reduce((a, c) => a + c.val, 0);
+    let possible = fuel.reduce((a, c) => a + (c.val > 0 ? c.val : 0), 0);
     return possible <= 0 ? 0 : Math.max(0, Math.min(100, Math.round((total / possible) * 100)));
   }
 
   function update() {
     localStorage.setItem('af_logs', JSON.stringify(logs));
-    const fuelLogs = logs.filter(l => l.label !== 'Water');
-    const score = calculateScore(fuelLogs);
+    const score = calculateScore(logs);
     const h2o = logs.filter(l => l.label === 'Water').length;
 
     document.getElementById('val-pct').innerText = score + '%';
@@ -159,19 +188,28 @@
   function renderHistory() {
     document.getElementById('history-list').innerHTML = history.map(h => {
         const total = (h.counts.Power + h.counts.Fruit + h.counts.Slow + h.counts.Fast + h.counts.Fun) || 1;
+        const pP = Math.round((h.counts.Power/total)*100);
+        const pFr = Math.round((h.counts.Fruit/total)*100);
+        const pS = Math.round((h.counts.Slow/total)*100);
+        const pFs = Math.round((h.counts.Fast/total)*100);
+        const pFu = Math.round((h.counts.Fun/total)*100);
+
         return `
           <div class="day-row">
-            <div class="day-label"><span>${h.date}: ${h.score}%</span><span style="color:var(--water)">💧 ${h.water}</span></div>
+            <div class="day-label"><span>${h.date}: ${h.score}% Fuel Grade</span><span style="color:var(--water)">💧 ${h.water} Glasses</span></div>
             <div class="stacked-bar">
-              <div class="segment p-power" style="width:${(h.counts.Power/total)*100}%"></div>
-              <div class="segment p-fruit" style="width:${(h.counts.Fruit/total)*100}%"></div>
-              <div class="segment p-slow" style="width:${(h.counts.Slow/total)*100}%"></div>
-              <div class="segment p-fast" style="width:${(h.counts.Fast/total)*100}%"></div>
-              <div class="segment p-fun" style="width:${(h.counts.Fun/total)*100}%"></div>
+              <div class="segment p-power" style="width:${pP}%">${pP > 10 ? 'Pwr' : ''}</div>
+              <div class="segment p-fruit" style="width:${pFr}%">${pFr > 10 ? 'Fr' : ''}</div>
+              <div class="segment p-slow" style="width:${pS}%">${pS > 10 ? 'Sl' : ''}</div>
+              <div class="segment p-fast" style="width:${pFs}%">${pFs > 10 ? 'Fs' : ''}</div>
+              <div class="segment p-fun" style="width:${pFu}%">${pFu > 10 ? 'Fun' : ''}</div>
+            </div>
+            <div class="comp-labels">
+               <span>Pwr: ${pP}%</span><span>Fr: ${pFr}%</span><span>Sl: ${pS}%</span><span>Fs: ${pFs}%</span><span>Fun: ${pFu}%</span>
             </div>
           </div>
         `;
-    }).join('') || "<div style='font-size:10px; color:#999; text-align:center;'>Finish a day to see stats</div>";
+    }).join('') || "<div style='font-size:10px; color:#999; text-align:center;'>Finish a day to see history</div>";
   }
 
   function archiveDay() {
@@ -205,7 +243,7 @@
     } else {
         history.push({
             date: dayLabel,
-            score: calculateScore(fuelLogs),
+            score: calculateScore(logs),
             water: h2oCount,
             counts: counts
         });
@@ -216,8 +254,6 @@
     logs = [];
     update();
   }
-
-  // Initial render on page load
   update();
 </script>
 </body>
