@@ -41,14 +41,14 @@
     .stacked-bar { display: flex; height: 24px; background: #eee; border-radius: 6px; overflow: hidden; border: 1px solid #ddd; margin-bottom: 4px; }
     .segment { height: 100%; }
     
-    .ref-card { background: #fff; border-radius: 12px; padding: 16px; margin-bottom: 12px; border-left: 6px solid #ccc; }
+    .ref-card { background: #fff; border-radius: 12px; padding: 16px; margin-bottom: 12px; border-left: 6px solid #ccc; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
     .ref-card h3 { margin: 0 0 6px; font-size: 16px; color: #333; }
     .ref-card p { margin: 4px 0; font-size: 13px; color: #444; line-height: 1.4; }
 
-    /* Visual Portion Guide Style */
-    .portion-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-    .portion-item { background: #f9f9f9; padding: 10px; border-radius: 8px; border: 1px solid #eee; text-align: center; font-size: 11px; }
-    .portion-item b { display: block; margin-bottom: 4px; color: var(--purple); font-size: 13px; }
+    .portion-box { background: #fdfdfd; border: 1px solid #eee; border-radius: 12px; padding: 15px; margin-top: 10px; }
+    .portion-row { margin-bottom: 15px; }
+    .portion-row b { color: var(--purple); font-size: 14px; display: block; margin-bottom: 3px; }
+    .portion-row i { font-size: 12px; color: #555; display: block; line-height: 1.4; }
   </style>
 </head>
 <body>
@@ -99,38 +99,49 @@
     <div class="ref-card" style="border-color: #43a047;">
       <h3>🍎 FRUIT (+2)</h3>
       <p><b>What:</b> Berries, bananas, apples, mango.</p>
-      <p><b>Why:</b> Nature's energy source. Provides quick fuel for the brain and muscles without the sugar crash.</p>
     </div>
 
     <div class="ref-card" style="border-color: #1565c0;">
       <h3>🐢 SLOW BURN (+2)</h3>
       <p><b>What:</b> Oats, Protein Pasta, Brown Rice, Quinoa.</p>
-      <p><b>Why:</b> Sustained energy. This is the fuel that keeps you running in the 2nd half of a game.</p>
     </div>
 
     <div class="ref-card" style="border-color: var(--warn);">
       <h3>🚀 FAST BURN (+1)</h3>
       <p><b>What:</b> White Rice, Plain Pasta, Bagels, Potatoes.</p>
-      <p><b>Why:</b> Immediate energy nitro boost. Great for right before training or at halftime.</p>
     </div>
 
     <div class="ref-card" style="border-color: var(--bad);">
       <h3>🍭 FUN FUEL (-3)</h3>
       <p><b>What:</b> Candy, Soda, Junk Food.</p>
-      <p><b>Why:</b> High spike energy that drains quickly. Fine for fun, but doesn't contribute to athletic recovery.</p>
     </div>
 
-    <h3 style="color: var(--purple); margin-top: 20px;">🖐️ Visual Portion Guide</h3>
-    <p style="font-size: 12px; color: #666; margin-bottom: 10px;">Use your hand to "eye-ball" a full serving before logging!</p>
-    
-    <div class="portion-grid">
-      <div class="portion-item"><b>MEAT</b>Palm Size & Thickness</div>
-      <div class="portion-item"><b>VEGGIES</b>Size of your Fist</div>
-      <div class="portion-item"><b>PEANUT BUTTER</b>Size of your Thumb</div>
-      <div class="portion-item"><b>CARBS</b>One Cupped Hand</div>
+    <div class="portion-box">
+      <h3 style="margin-top:0; color:var(--purple);">🖐️ Hand Portion Playbook</h3>
+      <p style="font-size:12px; margin-bottom:15px; color:#666;">Use your hand to eye-ball a serving before logging. Small bites don't count!</p>
+      
+      <div class="portion-row">
+        <b>PROTEIN / MEAT</b>
+        <i>Open your hand and look at your palm. Think of your hand without fingers—one portion of meat should match the size and thickness of that palm.</i>
+      </div>
+      
+      <div class="portion-row">
+        <b>VEGGIES (CARROTS/PEPPERS)</b>
+        <i>Close your fist. Everything from your wrist up—that whole ball—makes one full serving of veggies.</i>
+      </div>
+      
+      <div class="portion-row">
+        <b>PEANUT BUTTER</b>
+        <i>One serving is roughly the size of your thumb. Two thumbs is a "Gold Medal" serving with fruit!</i>
+      </div>
+      
+      <div class="portion-row">
+        <b>CARBS (RICE/PASTA)</b>
+        <i>One serving is what fits inside one cupped hand.</i>
+      </div>
     </div>
 
-    <button style="margin-top:30px; opacity:0.3; font-size:10px; width:100%; border: none; background: transparent;" onclick="localStorage.clear(); location.reload();">Reset Everything (Start Fresh)</button>
+    <button style="margin-top:30px; opacity:0.3; font-size:10px; width:100%; border:none; background:transparent;" onclick="localStorage.clear(); location.reload();">Reset All Data</button>
   </section>
 </main>
 
@@ -179,7 +190,6 @@
     `).join('') || "<small style='color:#aaa'>Ready to log...</small>";
 
     document.getElementById('history-list').innerHTML = history.map(h => {
-        // Calculate percentages based on raw counts stored in history
         const total = (h.counts.Power + h.counts.Fruit + h.counts.Slow + h.counts.Fast + h.counts.Fun) || 1;
         return `
           <div class="day-row">
@@ -193,18 +203,16 @@
             </div>
           </div>
         `;
-    }).join('');
+    }).join('') || "<div style='font-size:10px; color:#999; text-align:center;'>Save a day to see history</div>";
   }
 
   function archiveDay() {
     if (logs.length === 0) return;
     const dayLabel = new Date().toLocaleDateString('en-US', {weekday: 'short'});
-    
-    // Calculate current session stats
     const fuelLogs = logs.filter(l => l.label !== 'Water');
     const h2oCount = logs.filter(l => l.label === 'Water').length;
     
-    const currentCounts = {
+    const sessionCounts = {
       Power: fuelLogs.filter(l => l.label === 'Power').length,
       Fruit: fuelLogs.filter(l => l.label === 'Fruit').length,
       Slow: fuelLogs.filter(l => l.label === 'Slow').length,
@@ -215,34 +223,24 @@
     let idx = history.findIndex(h => h.date === dayLabel);
     
     if (idx > -1) {
-        // ADDITIVE MERGE LOGIC
-        // 1. Add water
         history[idx].water += h2oCount;
-        // 2. Add raw counts
-        history[idx].counts.Power += currentCounts.Power;
-        history[idx].counts.Fruit += currentCounts.Fruit;
-        history[idx].counts.Slow += currentCounts.Slow;
-        history[idx].counts.Fast += currentCounts.Fast;
-        history[idx].counts.Fun += currentCounts.Fun;
-        // 3. Re-calculate score based on new combined totals
+        history[idx].counts.Power += sessionCounts.Power;
+        history[idx].counts.Fruit += sessionCounts.Fruit;
+        history[idx].counts.Slow += sessionCounts.Slow;
+        history[idx].counts.Fast += sessionCounts.Fast;
+        history[idx].counts.Fun += sessionCounts.Fun;
+        
         const h = history[idx].counts;
         const totalPoints = (h.Power * 3) + (h.Fruit * 2) + (h.Slow * 2) + (h.Fast * 1) + (h.Fun * -3);
         const maxPoints = (h.Power * 3) + (h.Fruit * 2) + (h.Slow * 2) + (h.Fast * 1);
         history[idx].score = maxPoints <= 0 ? 0 : Math.max(0, Math.min(100, Math.round((totalPoints / maxPoints) * 100)));
     } else {
-        // Create new entry
-        const fuelLogs = logs.filter(l => l.label !== 'Water');
-        let sessionScore = 0;
-        if (fuelLogs.length > 0) {
-            let total = fuelLogs.reduce((a, c) => a + c.val, 0);
-            let possible = fuelLogs.reduce((a, c) => a + (c.val > 0 ? c.val : 0), 0);
-            sessionScore = possible <= 0 ? 0 : Math.max(0, Math.min(100, Math.round((total / possible) * 100)));
-        }
+        const score = calculateEngineGradeForSession(fuelLogs);
         history.push({
             date: dayLabel,
-            score: sessionScore,
+            score: score,
             water: h2oCount,
-            counts: currentCounts
+            counts: sessionCounts
         });
     }
 
@@ -250,6 +248,13 @@
     localStorage.setItem('af_history', JSON.stringify(history));
     logs = [];
     update();
+  }
+
+  function calculateEngineGradeForSession(fLogs) {
+    if (fLogs.length === 0) return 0;
+    let total = fLogs.reduce((a, c) => a + c.val, 0);
+    let possible = fLogs.reduce((a, c) => a + (c.val > 0 ? c.val : 0), 0);
+    return possible <= 0 ? 0 : Math.max(0, Math.min(100, Math.round((total / possible) * 100)));
   }
 
   update();
