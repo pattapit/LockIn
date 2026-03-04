@@ -137,7 +137,7 @@
       
       <div class="portion-row">
         <b>CARBS (RICE/PASTA)</b>
-        <i>One serving is what fits inside one cupped hand.</i>
+        <i>One serving is what fits inside one cupped hand (palm and fingers together making a bowl).</i>
       </div>
     </div>
 
@@ -166,15 +166,17 @@
     update();
   }
 
+  function calculateScoreForSet(fLogs) {
+    if (fLogs.length === 0) return 0;
+    let total = fLogs.reduce((a, c) => a + c.val, 0);
+    let possible = fLogs.reduce((a, c) => a + (c.val > 0 ? c.val : 0), 0);
+    return possible <= 0 ? 0 : Math.max(0, Math.min(100, Math.round((total / possible) * 100)));
+  }
+
   function update() {
     localStorage.setItem('af_logs', JSON.stringify(logs));
     const fuelLogs = logs.filter(l => l.label !== 'Water');
-    let score = 0;
-    if (fuelLogs.length > 0) {
-        let total = fuelLogs.reduce((a, c) => a + c.val, 0);
-        let possible = fuelLogs.reduce((a, c) => a + (c.val > 0 ? c.val : 0), 0);
-        score = possible <= 0 ? 0 : Math.max(0, Math.min(100, Math.round((total / possible) * 100)));
-    }
+    const score = calculateScoreForSet(fuelLogs);
 
     const h2o = logs.filter(l => l.label === 'Water').length;
     document.getElementById('val-pct').innerText = score + '%';
@@ -235,7 +237,7 @@
         const maxPoints = (h.Power * 3) + (h.Fruit * 2) + (h.Slow * 2) + (h.Fast * 1);
         history[idx].score = maxPoints <= 0 ? 0 : Math.max(0, Math.min(100, Math.round((totalPoints / maxPoints) * 100)));
     } else {
-        const score = calculateEngineGradeForSession(fuelLogs);
+        const score = calculateScoreForSet(fuelLogs);
         history.push({
             date: dayLabel,
             score: score,
@@ -248,13 +250,6 @@
     localStorage.setItem('af_history', JSON.stringify(history));
     logs = [];
     update();
-  }
-
-  function calculateEngineGradeForSession(fLogs) {
-    if (fLogs.length === 0) return 0;
-    let total = fLogs.reduce((a, c) => a + c.val, 0);
-    let possible = fLogs.reduce((a, c) => a + (c.val > 0 ? c.val : 0), 0);
-    return possible <= 0 ? 0 : Math.max(0, Math.min(100, Math.round((total / possible) * 100)));
   }
 
   update();
