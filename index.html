@@ -38,7 +38,7 @@
     .history-card { background: #fff; border-radius: 16px; padding: 15px; border: 1px solid #e6e6e6; margin-top: 20px; }
     .day-row { margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #f0f0f0; }
     .day-label { font-size: 13px; font-weight: 900; color: var(--purple); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
-    .stacked-bar { display: flex; height: 24px; background: #eee; border-radius: 6px; overflow: hidden; border: 1px solid #ddd; margin-bottom: 4px; }
+    .stacked-bar { display: flex; height: 24px; background: #ddd; border-radius: 6px; overflow: hidden; border: 1px solid #ccc; margin-bottom: 4px; }
     .segment { height: 100%; }
     
     .ref-card { background: #fff; border-radius: 12px; padding: 16px; margin-bottom: 12px; border-left: 6px solid #ccc; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
@@ -84,68 +84,30 @@
       <div id="history-list" style="margin-top:10px;"></div>
     </div>
 
-    <button style="width:100%; padding:18px; margin-top:15px; border-radius:12px; border:none; background:var(--purple); color:#fff; font-weight:bold;" onclick="archiveDay()">FINISH DAY & SAVE</button>
+    <button style="width:100%; padding:18px; margin-top:15px; border-radius:12px; border:none; background:var(--purple); color:#fff; font-weight:bold; cursor:pointer;" onclick="archiveDay()">FINISH DAY & SAVE</button>
   </section>
 
   <section id="ref" class="page">
     <h2 style="color: var(--purple); margin-top: 0;">The Athlete's Playbook</h2>
-    
-    <div class="ref-card" style="border-color: var(--good);">
-      <h3>⚡ POWER (+3)</h3>
-      <p><b>What:</b> Chicken, Steak, Eggs, Peanut Butter, Carrots, Cucumbers, Peppers.</p>
-      <p><b>Why:</b> Essential for repairing muscle fibers after training. High-density fuel that keeps your engine stable.</p>
-    </div>
-
-    <div class="ref-card" style="border-color: #43a047;">
-      <h3>🍎 FRUIT (+2)</h3>
-      <p><b>What:</b> Berries, bananas, apples, mango.</p>
-    </div>
-
-    <div class="ref-card" style="border-color: #1565c0;">
-      <h3>🐢 SLOW BURN (+2)</h3>
-      <p><b>What:</b> Oats, Protein Pasta, Brown Rice, Quinoa.</p>
-    </div>
-
-    <div class="ref-card" style="border-color: var(--warn);">
-      <h3>🚀 FAST BURN (+1)</h3>
-      <p><b>What:</b> White Rice, Plain Pasta, Bagels, Potatoes.</p>
-    </div>
-
-    <div class="ref-card" style="border-color: var(--bad);">
-      <h3>🍭 FUN FUEL (-3)</h3>
-      <p><b>What:</b> Candy, Soda, Junk Food.</p>
-    </div>
+    <div class="ref-card" style="border-color: var(--good);"><h3>⚡ POWER (+3)</h3><p><b>What:</b> Chicken, Steak, Eggs, Peanut Butter, Carrots, Cucumbers, Peppers.</p><p><b>Why:</b> Muscle repair and engine stability.</p></div>
+    <div class="ref-card" style="border-color: #43a047;"><h3>🍎 FRUIT (+2)</h3><p><b>What:</b> Berries, bananas, apples, mango.</p></div>
+    <div class="ref-card" style="border-color: #1565c0;"><h3>🐢 SLOW BURN (+2)</h3><p><b>What:</b> Oats, Protein Pasta, Brown Rice, Quinoa.</p></div>
+    <div class="ref-card" style="border-color: var(--warn);"><h3>🚀 FAST BURN (+1)</h3><p><b>What:</b> White Rice, Plain Pasta, Bagels, Potatoes.</p></div>
+    <div class="ref-card" style="border-color: var(--bad);"><h3>🍭 FUN FUEL (-3)</h3><p><b>What:</b> Candy, Soda, Junk Food.</p></div>
 
     <div class="portion-box">
       <h3 style="margin-top:0; color:var(--purple);">🖐️ Hand Portion Playbook</h3>
-      <p style="font-size:12px; margin-bottom:15px; color:#666;">Use your hand to eye-ball a serving before logging. Small bites don't count!</p>
-      
-      <div class="portion-row">
-        <b>PROTEIN / MEAT</b>
-        <i>Open your hand and look at your palm. Think of your hand without fingers—one portion of meat should match the size and thickness of that palm.</i>
-      </div>
-      
-      <div class="portion-row">
-        <b>VEGGIES (CARROTS/PEPPERS)</b>
-        <i>Close your fist. Everything from your wrist up—that whole ball—makes one full serving of veggies.</i>
-      </div>
-      
-      <div class="portion-row">
-        <b>PEANUT BUTTER</b>
-        <i>One serving is roughly the size of your thumb. Two thumbs is a "Gold Medal" serving with fruit!</i>
-      </div>
-      
-      <div class="portion-row">
-        <b>CARBS (RICE/PASTA)</b>
-        <i>One serving is what fits inside one cupped hand. Pull your fingers in to make a "bowl"—everything that fits in that bowl is one serving.</i>
-      </div>
+      <div class="portion-row"><b>PROTEIN / MEAT (POWER)</b><i>Open your hand and look at your palm. Think of your hand without fingers—one portion of meat should match the size and thickness of that palm.</i></div>
+      <div class="portion-row"><b>VEGGIES (POWER)</b><i>Close your fist. Everything from your wrist up—that whole ball—makes one full serving of veggies.</i></div>
+      <div class="portion-row"><b>PEANUT BUTTER (POWER)</b><i>One serving is roughly the size of your thumb.</i></div>
+      <div class="portion-row"><b>CARBS (SLOW / FAST BURN)</b><i>One serving is what fits inside one cupped hand. Pull your fingers in toward your palm to make a "bowl"—everything that fits in that bowl is one serving.</i></div>
     </div>
-
-    <button style="margin-top:30px; opacity:0.3; font-size:10px; width:100%; border:none; background:transparent;" onclick="localStorage.clear(); location.reload();">Reset All Data</button>
+    <button style="margin-top:30px; opacity:0.3; font-size:10px; width:100%; border:none; background:transparent; cursor:pointer;" onclick="localStorage.clear(); location.reload();">Reset All Data</button>
   </section>
 </main>
 
 <script>
+  // Initial Load
   let logs = JSON.parse(localStorage.getItem('af_logs') || '[]');
   let history = JSON.parse(localStorage.getItem('af_history') || '[]');
 
@@ -166,10 +128,10 @@
     update();
   }
 
-  function calculateScore(fLogs) {
-    if (fLogs.length === 0) return 0;
-    let total = fLogs.reduce((a, c) => a + c.val, 0);
-    let possible = fLogs.reduce((a, c) => a + (c.val > 0 ? c.val : 0), 0);
+  function calculateScore(items) {
+    if (items.length === 0) return 0;
+    let total = items.reduce((a, c) => a + c.val, 0);
+    let possible = items.reduce((a, c) => a + (c.val > 0 ? c.val : 0), 0);
     return possible <= 0 ? 0 : Math.max(0, Math.min(100, Math.round((total / possible) * 100)));
   }
 
@@ -177,8 +139,8 @@
     localStorage.setItem('af_logs', JSON.stringify(logs));
     const fuelLogs = logs.filter(l => l.label !== 'Water');
     const score = calculateScore(fuelLogs);
-
     const h2o = logs.filter(l => l.label === 'Water').length;
+
     document.getElementById('val-pct').innerText = score + '%';
     document.getElementById('fuel-bar').style.width = score + '%';
     document.getElementById('fuel-bar').style.backgroundColor = score >= 80 ? 'var(--good)' : (score >= 50 ? 'var(--warn)' : 'var(--bad)');
@@ -186,11 +148,15 @@
     document.getElementById('h2o-bar').style.width = Math.min(100, (h2o/8)*100) + '%';
 
     document.getElementById('chips').innerHTML = logs.map(l => `
-      <div style="background:#fff; border:1px solid #ddd; padding:4px 10px; border-radius:999px; font-size:11px; display:flex; align-items:center; gap:6px;">
+      <div style="background:#fff; border:1px solid #ddd; padding:4px 10px; border-radius:999px; font-size:11px; display:flex; align-items:center; gap:6px; margin-bottom:5px;">
         ${l.label} <button onclick="removeLog(${l.id})" style="border:none; background:none; color:red; font-weight:bold; cursor:pointer;">✕</button>
       </div>
     `).join('') || "<small style='color:#aaa'>Ready to log...</small>";
 
+    renderHistory();
+  }
+
+  function renderHistory() {
     document.getElementById('history-list').innerHTML = history.map(h => {
         const total = (h.counts.Power + h.counts.Fruit + h.counts.Slow + h.counts.Fast + h.counts.Fun) || 1;
         return `
@@ -205,7 +171,7 @@
             </div>
           </div>
         `;
-    }).join('') || "<div style='font-size:10px; color:#999; text-align:center;'>Save a day to see history</div>";
+    }).join('') || "<div style='font-size:10px; color:#999; text-align:center;'>Finish a day to see stats</div>";
   }
 
   function archiveDay() {
@@ -214,7 +180,7 @@
     const fuelLogs = logs.filter(l => l.label !== 'Water');
     const h2oCount = logs.filter(l => l.label === 'Water').length;
     
-    const sessionCounts = {
+    const counts = {
       Power: fuelLogs.filter(l => l.label === 'Power').length,
       Fruit: fuelLogs.filter(l => l.label === 'Fruit').length,
       Slow: fuelLogs.filter(l => l.label === 'Slow').length,
@@ -226,23 +192,22 @@
     
     if (idx > -1) {
         history[idx].water += h2oCount;
-        history[idx].counts.Power += sessionCounts.Power;
-        history[idx].counts.Fruit += sessionCounts.Fruit;
-        history[idx].counts.Slow += sessionCounts.Slow;
-        history[idx].counts.Fast += sessionCounts.Fast;
-        history[idx].counts.Fun += sessionCounts.Fun;
+        history[idx].counts.Power += counts.Power;
+        history[idx].counts.Fruit += counts.Fruit;
+        history[idx].counts.Slow += counts.Slow;
+        history[idx].counts.Fast += counts.Fast;
+        history[idx].counts.Fun += counts.Fun;
         
         const h = history[idx].counts;
-        const totalPoints = (h.Power * 3) + (h.Fruit * 2) + (h.Slow * 2) + (h.Fast * 1) + (h.Fun * -3);
-        const maxPoints = (h.Power * 3) + (h.Fruit * 2) + (h.Slow * 2) + (h.Fast * 1);
-        history[idx].score = maxPoints <= 0 ? 0 : Math.max(0, Math.min(100, Math.round((totalPoints / maxPoints) * 100)));
+        const pts = (h.Power * 3) + (h.Fruit * 2) + (h.Slow * 2) + (h.Fast * 1) + (h.Fun * -3);
+        const max = (h.Power * 3) + (h.Fruit * 2) + (h.Slow * 2) + (h.Fast * 1);
+        history[idx].score = max <= 0 ? 0 : Math.max(0, Math.min(100, Math.round((pts / max) * 100)));
     } else {
-        const score = calculateScore(fuelLogs);
         history.push({
             date: dayLabel,
-            score: score,
+            score: calculateScore(fuelLogs),
             water: h2oCount,
-            counts: sessionCounts
+            counts: counts
         });
     }
 
@@ -252,6 +217,7 @@
     update();
   }
 
+  // Initial render on page load
   update();
 </script>
 </body>
