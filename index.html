@@ -137,7 +137,7 @@
       
       <div class="portion-row">
         <b>CARBS (RICE/PASTA)</b>
-        <i>One serving is what fits inside one cupped hand (palm and fingers together making a bowl).</i>
+        <i>One serving is what fits inside one cupped hand. Pull your fingers in to make a "bowl"—everything that fits in that bowl is one serving.</i>
       </div>
     </div>
 
@@ -166,7 +166,7 @@
     update();
   }
 
-  function calculateScoreForSet(fLogs) {
+  function calculateScore(fLogs) {
     if (fLogs.length === 0) return 0;
     let total = fLogs.reduce((a, c) => a + c.val, 0);
     let possible = fLogs.reduce((a, c) => a + (c.val > 0 ? c.val : 0), 0);
@@ -176,7 +176,7 @@
   function update() {
     localStorage.setItem('af_logs', JSON.stringify(logs));
     const fuelLogs = logs.filter(l => l.label !== 'Water');
-    const score = calculateScoreForSet(fuelLogs);
+    const score = calculateScore(fuelLogs);
 
     const h2o = logs.filter(l => l.label === 'Water').length;
     document.getElementById('val-pct').innerText = score + '%';
@@ -237,7 +237,7 @@
         const maxPoints = (h.Power * 3) + (h.Fruit * 2) + (h.Slow * 2) + (h.Fast * 1);
         history[idx].score = maxPoints <= 0 ? 0 : Math.max(0, Math.min(100, Math.round((totalPoints / maxPoints) * 100)));
     } else {
-        const score = calculateScoreForSet(fuelLogs);
+        const score = calculateScore(fuelLogs);
         history.push({
             date: dayLabel,
             score: score,
